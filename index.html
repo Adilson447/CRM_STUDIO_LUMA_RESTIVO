@@ -259,6 +259,8 @@ input,select,textarea{font-family:inherit;font-size:14px;color:var(--text)}
 .tag.reposicao{background:#e8f0fe;color:#1967d2}
 .tag.falta{background:#fce8e6;color:#c5221f}
 .tag.presente{background:#e6f4ea;color:#137333}
+.tag.repos{background:#fef7e0;color:#b06000}
+.mini-act.on-rep{background:#fef7e0;color:#b06000;font-weight:700}
 .mini-act.on-ok{background:#e6f4ea;color:#137333;font-weight:700}
 .mini-act.on-bad{background:#fce8e6;color:#c5221f;font-weight:700}
 .mini-act{border:0;background:transparent;cursor:pointer;width:28px;height:28px;border-radius:50%;color:var(--muted);font-size:15px}
@@ -278,7 +280,9 @@ input,select,textarea{font-family:inherit;font-size:14px;color:var(--text)}
 .modal.inline{width:100%;max-width:none;max-height:none;overflow:visible;box-shadow:none;border-radius:0;background:transparent}
 .modal.inline>.modal-top{display:none}
 .modal.inline>.modal-b{padding:0}
-.modal.inline>.modal-f{display:none}
+.modal.inline>.modal-f{padding:18px 0 0;justify-content:flex-start}
+.modal.inline>.modal-f [data-x]{display:none}
+.modal.inline>.modal-f:not(:has(button:not([data-x]))){display:none}
 .modal.inline .det-bar{display:none}
 .drop{border:2px dashed var(--line);border-radius:12px;padding:34px 20px;text-align:center;cursor:pointer;transition:.15s}
 .drop:hover,.drop.over{border-color:var(--prof);background:var(--prof-soft)}
@@ -853,13 +857,15 @@ const ICO={
   agenda:'<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
   financeiro:'<path d="M3 3v18h18M7 15l4-4 3 3 5-6"/>',
   contas:'<path d="M20 21H4a2 2 0 01-2-2V7h20v12a2 2 0 01-2 2zM2 7l2.5-4h15L22 7M9 13h6"/>',
+  reposicoes:'<path d="M3 12a9 9 0 019-9 9 9 0 016.36 2.64L21 8M21 3v5h-5M21 12a9 9 0 01-9 9 9 9 0 01-6.36-2.64L3 16M3 21v-5h5"/>',
   ajustes:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 008 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.65 1.65 0 004.6 15a1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.6a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9c.14.36.44.63.8.77H21a2 2 0 110 4h-.09c-.36.14-.66.41-.8.77z"/>'
 };
 const MODULOS=[
   {g:"", itens:[
     {id:"inicio",    nome:"Início"},
     {id:"agenda",    nome:"Agenda"},
-    {id:"alunos",    nome:"Alunos"}]},
+    {id:"alunos",    nome:"Alunos"},
+    {id:"reposicoes",nome:"Reposições"}]},
   {g:"Dinheiro", itens:[
     {id:"financeiro",nome:"Financeiro"},
     {id:"contas",    nome:"Contas a pagar", soGestora:true}]},
@@ -871,10 +877,13 @@ function pendencias(){
   const aviso=parseInt(S.cfg.dias_aviso_renovacao||"30",10);
   const renov=minhasAlunas().filter(a=>a.plano_fim).map(a=>statusPlano(a))
     .filter(x=>x.dias!=null&&x.dias<=aviso).length;
-  return {atrasados:A.linhas.filter(x=>x.atrasado).length, renov};
+  const repVencendo=minhasAlunas().reduce((n,a)=>{
+    const c=creditosReposicao(a.id).filter(c=>c.valido&&c.diasRestantes<=7);
+    return n+(c.length?1:0);},0);
+  return {atrasados:A.linhas.filter(x=>x.atrasado).length, renov, repVencendo};
 }
 function renderRail(){
-  const P=pendencias(), bad={financeiro:P.atrasados+P.renov};
+  const P=pendencias(), bad={financeiro:P.atrasados+P.renov, reposicoes:P.repVencendo||0};
   document.getElementById("railNav").innerHTML=MODULOS.map(sec=>{
     const itens=sec.itens.filter(i=>!i.soGestora||S.isLuma);
     if(!itens.length)return "";
@@ -1553,13 +1562,17 @@ function modalDetalhe(aulaId,d){
         return `<div class="al">
           <span class="av" style="background:${c.cor}">${esc(al.nome.trim()[0]||"?").toUpperCase()}</span>
           <span class="nm"><b>${esc(al.nome)}</b><span>${esc(al.telefone||"sem telefone")}</span></span>
-          ${pr&&pr.status==="falta"?'<span class="tag falta">falta</span>':pr&&pr.status==="presente"?'<span class="tag presente">presente</span>':`<span class="tag ${mt.tipo}">${mt.tipo==="reposicao"?"reposição":(mt.tipo==="fixa"?gen(al,"fixa","fixo"):mt.tipo)}</span>`}
+          ${pr&&pr.status==="falta"?'<span class="tag falta">falta</span>'
+             :pr&&pr.status==="desmarcada"?`<span class="tag repos" title="Crédito válido até ${pr.credito_ate||"—"}">desmarcou${pr.credito_ate?" · vale até "+pr.credito_ate.slice(8,10)+"/"+pr.credito_ate.slice(5,7):""}</span>`
+             :pr&&pr.status==="presente"?'<span class="tag presente">presente</span>':`<span class="tag ${mt.tipo}">${mt.tipo==="reposicao"?"reposição":(mt.tipo==="fixa"?gen(al,"fixa","fixo"):mt.tipo)}</span>`}
           <button class="mini-act" data-zap="${al.id}" title="Lembrar no WhatsApp"
             ${telWhats(al.telefone)?"":"disabled style='opacity:.3'"}>💬</button>
           <button class="mini-act ${pr&&pr.status==="presente"?"on-ok":""}" data-pres="${mt.aluna_id}"
-            data-st="presente" title="Marcar presença">✓</button>
+            data-st="presente" title="Presente">✓</button>
+          <button class="mini-act ${pr&&pr.status==="desmarcada"?"on-rep":""}" data-pres="${mt.aluna_id}"
+            data-st="desmarcada" title="Desmarcou a tempo — ganha reposição">↻</button>
           <button class="mini-act ${pr&&pr.status==="falta"?"on-bad":""}" data-pres="${mt.aluna_id}"
-            data-st="falta" title="Marcar falta">✕</button>
+            data-st="falta" title="Faltou sem avisar — sem reposição">✕</button>
           <button class="mini-act" data-rm="${mt.id}" title="Remover da aula">✕</button>
         </div>`;}).join(""):'<div style="font-size:13px;color:var(--muted);padding:6px 2px">Nenhuma aluna nesta aula ainda.</div>'}</div>
 
@@ -1608,8 +1621,9 @@ function modalDetalhe(aulaId,d){
       if(tipo==="reposicao"){
         const s=saldoReposicao(al.id,date);
         if(s.saldo<=0&&!confirm(
-          `${al.nome} não tem reposição disponível em ${nomeMes(date).toLowerCase()}.\n\n`+
-          `Faltas no mês: ${s.faltas} · direito: ${s.credito} · já usou: ${s.usadas}\n\n`+
+          `${al.nome} não tem crédito de reposição válido hoje.\n\n`+
+          `Desmarcações: ${s.faltas} · com direito: ${s.credito} · já usou: ${s.usadas}`+
+          (s.vencidos?` · ${s.vencidos} venceu(ram)`:"")+`\n\n`+
           `Marcar a reposição mesmo assim?`)) return;
       }
       if(mats.some(x=>x.aluna_id===al.id)){toast("Essa aluna já está na aula.");return;}
@@ -1639,17 +1653,36 @@ function modalDetalhe(aulaId,d){
   });
   m.querySelectorAll("[data-pres]").forEach(b=>b.onclick=async()=>{
     const alid=b.dataset.pres,st=b.dataset.st,pr=presencaDe(a.id,alid,d);
+    const al2=alunaById(alid),R=regraRepos();
+    let noPrazo=true;
+    if(st==="desmarcada"&&!(pr&&pr.status===st)){
+      noPrazo=dentroDoPrazo(a,d);
+      if(!noPrazo&&!confirm(
+        `${al2.nome} está desmarcando com menos de ${R.horas}h de antecedência.\n\n`+
+        `Pela regra do Studio, sem antecedência não gera reposição.\n\nDar o crédito mesmo assim?`)) return;
+    }
     try{
       if(pr&&pr.status===st){                       // clicou de novo: desmarca
         await db.remove("sl_presencas",pr.id);
         S.presencas=S.presencas.filter(x=>x.id!==pr.id);
-      }else if(pr){                                  // troca presença <-> falta
-        const [r]=await db.update("sl_presencas",pr.id,{status:st});Object.assign(pr,r);
+      }else if(pr){                                  // troca entre presente / desmarcou / falta
+        const corpo={status:st,no_prazo:st==="desmarcada"?noPrazo:null};
+        if(st==="desmarcada"&&!pr.credito_ate)
+          corpo.credito_ate=iso(addDays(parseISO(d),regraRepos().validade));
+        if(st!=="desmarcada")corpo.credito_ate=null;
+        const [r]=await db.update("sl_presencas",pr.id,corpo);Object.assign(pr,r);
       }else{
-        const [r]=await db.insert("sl_presencas",{aula_id:a.id,aluna_id:alid,data:d,status:st});
+        const [r]=await db.insert("sl_presencas",{aula_id:a.id,aluna_id:alid,data:d,status:st,
+          no_prazo:st==="desmarcada"?noPrazo:null,
+          credito_ate:st==="desmarcada"?iso(addDays(parseISO(d),regraRepos().validade)):null});
         S.presencas.push(r);
       }
       closeModal();render();modalDetalhe(a.id,d);
+      if(st==="desmarcada"){
+        const sr=saldoReposicao(alid);
+        toast(`${al2.nome}: ${sr.saldo} reposição(ões) disponível(is)`+
+              (sr.proximo?`, a primeira vence ${sr.proximo.vence.slice(8,10)}/${sr.proximo.vence.slice(5,7)}`:""));
+      }
     }catch(e){toast(limparErro(e));}
   });
   const cb=m.querySelector("[data-cancel]");
@@ -1682,6 +1715,12 @@ const rotuloForma=f=>(FORMAS.find(x=>x[0]===f)||[])[1]||"";
 const gen=(al,fem,masc)=>(al&&al.genero==="M")?masc:fem;
 const oAluno=al=>gen(al,"aluna","aluno");
 const PARCEIROS=["wellhub","totalpass"];
+function taxas(){
+  try{const t=JSON.parse(S.cfg.taxas_pagamento||"{}");return typeof t==="object"&&t?t:{};}
+  catch(e){return {};}
+}
+const taxaDe   =f=>Number(taxas()[f]||0);
+const liquidoDe=(v,f)=>Math.round((Number(v||0)*(1-taxaDe(f)/100))*100)/100;
 function modalidades(){
   try{const l=JSON.parse(S.cfg.modalidades||"[]");return Array.isArray(l)&&l.length?l:["Pilates"];}
   catch(e){return ["Pilates"];}
@@ -2460,15 +2499,66 @@ async function salvarConfig(chave,valor){
   }catch(e){toast(limparErro(e));}
 }
 
-/* ---------- saldo de reposição ---------- */
+/* ---------- créditos de reposição (livro-caixa por aluno) ---------- */
+const regraRepos=()=>({
+  porMes  : Math.max(0,parseInt(S.cfg.reposicoes_por_mes||"2",10)||0),
+  validade: Math.max(1,parseInt(S.cfg.validade_reposicao_dias||"30",10)||30),
+  horas   : Math.max(0,parseFloat(S.cfg.horas_antecedencia||"3")||0)
+});
+/* devolve cada crédito do aluno com validade e em que aula foi usado */
+function creditosReposicao(alunaId){
+  const R=regraRepos(),hoje=iso(new Date());
+  const desm=S.presencas
+    .filter(p=>p.aluna_id===alunaId&&p.status==="desmarcada")
+    .sort((a,b)=>a.data.localeCompare(b.data));
+  const porMes={};
+  const creditos=desm.map(p=>{
+    const m=p.data.slice(0,7);
+    porMes[m]=(porMes[m]||0)+1;
+    const acima=porMes[m]>R.porMes;
+    return {id:p.id, aula_id:p.aula_id, data:p.data,
+            vence:p.credito_ate||iso(addDays(parseISO(p.data),R.validade)),
+            acimaDoLimite:acima, usadoEm:null, ordem:porMes[m]};
+  });
+  // reposições marcadas consomem o crédito válido mais antigo (o que vence primeiro)
+  const usos=S.matriculas
+    .filter(m=>m.aluna_id===alunaId&&m.ativo&&m.tipo==="reposicao"&&m.data)
+    .sort((a,b)=>a.data.localeCompare(b.data));
+  usos.forEach(u=>{
+    const c=creditos.filter(c=>!c.usadoEm&&!c.acimaDoLimite&&c.data<=u.data&&c.vence>=u.data)
+                    .sort((a,b)=>a.vence.localeCompare(b.vence))[0];
+    if(c){c.usadoEm=u.data;c.matricula=u.id;}
+    else creditos.push({id:"avulso-"+u.id,data:u.data,vence:u.data,usadoEm:u.data,
+                        semCredito:true,acimaDoLimite:false});
+  });
+  creditos.forEach(c=>{
+    c.vencido = !c.usadoEm && c.vence < hoje;
+    c.valido  = !c.usadoEm && !c.vencido && !c.acimaDoLimite;
+    c.diasRestantes = c.usadoEm?null:diasPara(c.vence);
+  });
+  return creditos;
+}
 function saldoReposicao(alunaId,ref){
-  const ini=mesISO(ref),fim=iso(mesFim(ref));
-  const limite=Math.max(0,parseInt(S.cfg.reposicoes_por_mes||"2",10)||0);
-  const faltas=S.presencas.filter(p=>p.aluna_id===alunaId&&p.status==="falta"&&p.data>=ini&&p.data<=fim).length;
-  const usadas=S.matriculas.filter(m=>m.aluna_id===alunaId&&m.ativo&&m.tipo==="reposicao"
-                                    &&m.data&&m.data>=ini&&m.data<=fim).length;
-  const credito=Math.min(faltas,limite);
-  return {faltas,limite,credito,usadas,saldo:Math.max(0,credito-usadas)};
+  const cr=creditosReposicao(alunaId);
+  const R=regraRepos();
+  const noMes=ref?cr.filter(c=>c.data.slice(0,7)===mesISO(ref).slice(0,7)):cr;
+  return {
+    limite:R.porMes, validade:R.validade,
+    faltas :noMes.filter(c=>!c.semCredito).length,          // desmarcações do mês
+    credito:noMes.filter(c=>!c.semCredito&&!c.acimaDoLimite).length,
+    usadas :noMes.filter(c=>c.usadoEm).length,
+    saldo  :cr.filter(c=>c.valido).length,                  // válido HOJE, some mês
+    vencidos:cr.filter(c=>c.vencido).length,
+    proximo:cr.filter(c=>c.valido).sort((a,b)=>a.vence.localeCompare(b.vence))[0]||null,
+    creditos:cr
+  };
+}
+/* o aluno avisou com a antecedência mínima? */
+function dentroDoPrazo(aula,dataISO){
+  const R=regraRepos();
+  const ini=parseISO(dataISO);
+  ini.setHours(...toMin(aula.hora_inicio)>=0?[Math.floor(toMin(aula.hora_inicio)/60),toMin(aula.hora_inicio)%60,0,0]:[0,0,0,0]);
+  return (ini-new Date())/3600000 >= R.horas;
 }
 
 /* =====================================================================
@@ -2683,6 +2773,8 @@ function modalRecebimentos(alvo){
     const L=dadosDoMes(),comp=mesISO(ref);
     const previsto=L.reduce((s,x)=>s+x.valor,0);
     const recebido=L.filter(x=>x.pago).reduce((s,x)=>s+(Number(x.p.valor_pago??x.valor)),0);
+    const cobradoPago=L.filter(x=>x.pago).reduce((s,x)=>s+Number(x.p.valor),0);
+    const taxasMes=Math.round((cobradoPago-recebido)*100)/100;
     const atraso  =L.filter(x=>x.atrasado).reduce((s,x)=>s+x.valor,0);
     const semCob  =L.filter(x=>!x.p).length;
     document.getElementById("rec").innerHTML=`
@@ -2700,10 +2792,12 @@ function modalRecebimentos(alvo){
         </div>
         <div class="kpis">
           <div class="kpi"><b>${fmtBRL(previsto)}</b><span>previsto</span></div>
-          <div class="kpi"><b style="color:#137333">${fmtBRL(recebido)}</b><span>recebido</span></div>
-          <div class="kpi"><b style="color:#b06000">${fmtBRL(previsto-recebido)}</b><span>em aberto</span></div>
+          <div class="kpi"><b style="color:#137333">${fmtBRL(recebido)}</b><span>recebido líquido</span></div>
+          <div class="kpi"><b style="color:#b06000">${fmtBRL(previsto-cobradoPago)}</b><span>em aberto</span></div>
           <div class="kpi"><b style="color:${atraso?"#c5221f":"var(--muted)"}">${fmtBRL(atraso)}</b><span>atrasado</span></div>
         </div>
+        ${taxasMes>0?`<div class="aviso">Cobrado <b>${fmtBRL(cobradoPago)}</b> · a maquininha ficou com
+          <b>${fmtBRL(taxasMes)}</b> · entrou <b>${fmtBRL(recebido)}</b> na conta.</div>`:""}
         ${semCob?`<div class="aviso"><b>${semCob} aluno(s) ainda sem cobrança lançada neste mês.</b>
           Gerar cria uma linha para cada uma, com o valor e o vencimento do cadastro.
           <div style="margin-top:8px"><button class="btn sm pri" data-gerar>Gerar cobranças de ${nomeMes(ref).split(" de ")[0].toLowerCase()}</button></div></div>`:""}
@@ -2712,13 +2806,16 @@ function modalRecebimentos(alvo){
             <th style="width:190px"></th></tr></thead>
           <tbody>${L.map((x,i)=>{
             const c=x.al.professora?CORES[x.al.professora]:null;
+            const liq=x.pago?Number(x.p.valor_pago??x.valor):null;
+            const tx =x.pago&&x.p.taxa_valor?Number(x.p.taxa_valor):0;
             const sit=x.pago?`<span class="st nova">pago ${x.p.pago_em.slice(8,10)}/${x.p.pago_em.slice(5,7)}</span>`
                      :x.atrasado?'<span class="st erro">atrasado</span>'
                      :x.p?'<span class="st dupl">em aberto</span>':'<span style="color:var(--muted);font-size:11px">sem cobrança</span>';
             return `<tr class="${x.atrasado?"err":""}">
               <td><b>${esc(x.al.nome)}</b>${c?`<div style="font-size:10px;color:${c.cor};font-weight:600">${c.nome}</div>`:""}</td>
               <td>${esc(rotuloPlano(x.al.plano)||"—")}</td>
-              <td><b>${fmtBRL(x.valor)}</b></td>
+              <td><b>${fmtBRL(x.valor)}</b>${tx>0?`<div style="font-size:10px;color:var(--muted)">
+                líquido ${fmtBRL(liq)} · taxa ${fmtBRL(tx)}</div>`:""}</td>
               <td>${x.venc?x.venc.slice(8,10)+"/"+x.venc.slice(5,7):"—"}</td>
               <td>${sit}</td>
               <td style="white-space:nowrap">
@@ -2758,21 +2855,15 @@ function modalRecebimentos(alvo){
     const g=box.querySelector("[data-gerar]");
     if(g)g.onclick=()=>lancar(L.filter(x=>!x.p&&x.valor>0).map(x=>x.al),comp);
     box.querySelectorAll("[data-uma]").forEach(b=>b.onclick=()=>lancar([alunaById(b.dataset.uma)],comp));
-    box.querySelectorAll("[data-pago]").forEach(b=>b.onclick=async()=>{
+    box.querySelectorAll("[data-pago]").forEach(b=>b.onclick=()=>{
       const p=S.pagamentos.find(x=>x.id===b.dataset.pago);
-      const forma=prompt("Como recebeu? (pix, dinheiro, cartao, transferencia)","pix");
-      if(forma===null)return;
-      const f=["pix","dinheiro","cartao","transferencia"].includes(String(forma).toLowerCase().trim())
-              ?String(forma).toLowerCase().trim():"outro";
-      try{
-        const [r]=await db.update("sl_pagamentos",p.id,{pago_em:iso(new Date()),valor_pago:p.valor,forma:f});
-        Object.assign(p,r);desenhar();toast("Recebimento registrado.");
-      }catch(e){toast(limparErro(e));}
+      const x=L.find(y=>y.p&&y.p.id===p.id);
+      modalBaixa(p,x?x.al:null,()=>desenhar());
     });
     box.querySelectorAll("[data-desfaz]").forEach(b=>b.onclick=async()=>{
       const p=S.pagamentos.find(x=>x.id===b.dataset.desfaz);
       try{
-        const [r]=await db.update("sl_pagamentos",p.id,{pago_em:null,valor_pago:null,forma:null});
+        const [r]=await db.update("sl_pagamentos",p.id,{pago_em:null,valor_pago:null,forma:null,taxa_pct:null,taxa_valor:null,liquido:null});
         Object.assign(p,r);desenhar();toast("Baixa desfeita.");
       }catch(e){toast(limparErro(e));}
     });
@@ -2787,11 +2878,13 @@ function modalRecebimentos(alvo){
     if(mo)mo.onclick=()=>modalModeloMsg("msg_cobranca","Mensagem de cobrança",
       ["mes","valor","vencimento","studio"],()=>{alvo?render():(closeModal(),modalRecebimentos());});
     box.querySelector("[data-csv]").onclick=()=>{
-      const cab=["Aluna","Professora","Plano","Valor","Vencimento","Situação","Pago em","Forma"];
+      const cab=["Aluno","Professora","Plano","Valor cobrado","Taxa","Líquido","Vencimento","Situação","Pago em","Forma"];
       const linhas=[cab].concat(L.map(x=>[x.al.nome,x.al.professora?CORES[x.al.professora].nome:"",
-        rotuloPlano(x.al.plano),String(x.valor).replace(".",","),x.venc||"",
-        x.pago?"pago":(x.atrasado?"atrasado":(x.p?"em aberto":"sem cobrança")),
-        x.p&&x.p.pago_em||"",x.p&&x.p.forma||""]));
+        rotuloPlano(x.al.plano),String(x.valor).replace(".",","),
+        String(x.p&&x.p.taxa_valor||0).replace(".",","),
+        String(x.pago?(x.p.valor_pago??x.valor):"").replace(".",","),
+        x.venc||"", x.pago?"pago":(x.atrasado?"atrasado":(x.p?"em aberto":"sem cobrança")),
+        x.p&&x.p.pago_em||"", x.p&&rotuloForma(x.p.forma)||""]));
       const csv="﻿"+linhas.map(l=>l.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(";")).join("\r\n");
       baixar(new Blob([csv],{type:"text/csv;charset=utf-8"}),`recebimentos-${mesISO(ref).slice(0,7)}.csv`);
     };
@@ -2818,10 +2911,13 @@ function apuracao(ref){
   }).filter(x=>passado?!!x.p:(x.valor>0||x.p));
   const previsto=linhas.reduce((s,x)=>s+x.valor,0);
   const recebido=linhas.filter(x=>x.pago).reduce((s,x)=>s+Number(x.p.valor_pago??x.valor),0);
+  const bruto   =linhas.filter(x=>x.pago).reduce((s,x)=>s+Number(x.p.valor),0);
+  const taxas   =Math.round((bruto-recebido)*100)/100;
   const atrasado=linhas.filter(x=>x.atrasado).reduce((s,x)=>s+x.valor,0);
   const ativas=alunas.filter(a=>Number(a.valor)>0).length;
-  return {linhas,previsto,recebido,aberto:previsto-recebido,atrasado,ativas,
-          ticket:ativas?previsto/ativas:0,alunas};
+  // "em aberto" é o que ainda falta COBRAR — não pode inflar com a taxa da maquininha
+  return {linhas,previsto,recebido,bruto,taxas,aberto:Math.round((previsto-bruto)*100)/100,
+          atrasado,ativas,ticket:ativas?previsto/ativas:0,alunas};
 }
 /* receita recorrente: soma do valor mensal de quem tem plano vigente */
 function mrr(){
@@ -2910,6 +3006,8 @@ function modalFinanceiro(alvo){
           <div class="kpi"><b style="color:var(--warning)">${fmtBRL(A.aberto)}</b><span>em aberto</span></div>
           <div class="kpi"><b style="color:${A.atrasado?"var(--critical)":"var(--muted)"}">${fmtBRL(A.atrasado)}</b><span>atrasado</span></div>
         </div>
+        ${A.taxas>0?`<div class="aviso">Das mensalidades já recebidas, <b>${fmtBRL(A.taxas)}</b> ficaram
+          com a maquininha — entrou <b>${fmtBRL(A.recebido)}</b> de <b>${fmtBRL(A.bruto)}</b> cobrados.</div>`:""}
 
         <div class="cards">
           <div class="card">
@@ -3027,6 +3125,19 @@ function modalPrecos(aoFechar,alvo){
                 value="${(t[k]&&t[k]["2x"])??""}"></td>
           <td style="color:var(--muted)">${meses}x</td></tr>`).join("")}</tbody>
       </table></div>
+      <h4 style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin:20px 0 8px">
+        Taxa de cada forma de pagamento</h4>
+      <p style="font-size:12.5px;color:var(--muted);margin:0 0 10px;line-height:1.6">
+        Quanto a maquininha/parceiro fica de cada recebimento. O sistema já sugere o valor líquido
+        na hora de dar baixa — e você pode corrigir caso a caso.</p>
+      <div class="prev-wrap" style="max-height:none"><table class="prev">
+        <thead><tr><th>Forma</th><th>Taxa (%)</th><th>Exemplo: R$ 210,00 vira</th></tr></thead>
+        <tbody>${FORMAS.map(([k,rot])=>`<tr>
+          <td>${rot}</td>
+          <td><input id="tx_${k}" type="number" step="0.01" min="0" max="100" value="${taxaDe(k)}"
+                style="width:88px;padding:6px 8px;border:1px solid var(--line);border-radius:6px"></td>
+          <td id="ex_${k}" style="color:var(--muted)">${fmtBRL(liquidoDe(210,k))}</td></tr>`).join("")}</tbody>
+      </table></div>
       <div class="fld" style="margin-top:16px"><label>Avisar da renovação com quantos dias de antecedência</label>
         <input id="p_dias" type="number" min="1" max="120" value="${esc(S.cfg.dias_aviso_renovacao||"30")}" style="width:120px"></div>
       <div class="hint">Mudar a tabela <b>não altera</b> o valor de quem já está cadastrada —
@@ -3037,6 +3148,11 @@ function modalPrecos(aoFechar,alvo){
       <button class="btn pri" data-save>Salvar</button>
     </div>
   </div>`);
+  FORMAS.forEach(([k])=>{
+    const i=m.querySelector("#tx_"+k);
+    if(i)i.oninput=()=>{const v=parseFloat(i.value)||0;
+      m.querySelector("#ex_"+k).textContent=fmtBRL(Math.round(210*(1-v/100)*100)/100);};
+  });
   m.querySelectorAll("[data-x]").forEach(b=>b.onclick=()=>{if(alvo)render();else{closeModal();if(aoFechar)aoFechar();}});
   m.querySelector("[data-save]").onclick=async()=>{
     const novo={};
@@ -3048,6 +3164,9 @@ function modalPrecos(aoFechar,alvo){
       if(isFinite(b))novo[k]["2x"]=b;
     });
     await salvarConfig("tabela_precos",JSON.stringify(novo));
+    const tx={};
+    FORMAS.forEach(([k])=>{const v=parseFloat(m.querySelector("#tx_"+k).value);tx[k]=isFinite(v)?v:0;});
+    await salvarConfig("taxas_pagamento",JSON.stringify(tx));
     const d=parseInt(m.querySelector("#p_dias").value,10);
     if(isFinite(d)&&d>0)await salvarConfig("dias_aviso_renovacao",String(d));
     if(alvo){render();}else{closeModal();if(aoFechar)aoFechar();}toast("Tabela de preços salva.");
@@ -3150,12 +3269,11 @@ VIEWS.financeiro=function(head,mod){
   head.innerHTML=btnMenu()+`<div><h1>Financeiro</h1>
     <div class="sub">${S.isLuma?"Studio inteiro":"Somente a sua carteira"}</div></div>
     <div class="spacer"></div>`+
-    abas("fin",[["painel","Painel"],["recebimentos","Recebimentos"],["reposicoes","Reposições"]],aba);
+    abas("fin",[["painel","Painel"],["recebimentos","Recebimentos"]],aba);
   mod.innerHTML='<div class="rolar viz" id="dest"></div>';
   const d=document.getElementById("dest");
-  if(aba==="recebimentos")      modalRecebimentos(d);
-  else if(aba==="reposicoes")   modalReposicoes(d);
-  else                          modalFinanceiro(d);
+  if(aba==="recebimentos") modalRecebimentos(d);
+  else                     modalFinanceiro(d);
   head.querySelectorAll("[data-aba]").forEach(b=>b.onclick=()=>{S.abaFin=b.dataset.aba;render();});
 };
 
@@ -3494,6 +3612,238 @@ function modalRegrasRepasse(){
       const d=parseInt(m.querySelector("#rp_defas").value,10);
       if(isFinite(d)&&d>=0)await salvarConfig("mes_defasagem_parceiro",String(d));
       await loadAll();closeModal();render();toast("Regras salvas.");
+    }catch(e){toast(limparErro(e));}
+  };
+}
+
+
+/* =====================================================================
+   MÓDULO: REPOSIÇÕES
+   ===================================================================== */
+VIEWS.reposicoes=function(head,mod){
+  const R=regraRepos();
+  const linhas=minhasAlunas().map(al=>({al,cr:creditosReposicao(al.id),s:saldoReposicao(al.id)}))
+    .filter(x=>x.cr.length)
+    .sort((a,b)=>{
+      const va=a.s.proximo?a.s.proximo.vence:"9999", vb=b.s.proximo?b.s.proximo.vence:"9999";
+      return (b.s.saldo-a.s.saldo)||va.localeCompare(vb)||a.al.nome.localeCompare(b.al.nome);
+    });
+  const comSaldo=linhas.filter(x=>x.s.saldo>0);
+  const vencendo=linhas.filter(x=>x.s.proximo&&x.s.proximo.diasRestantes<=7);
+  const vencidos=linhas.reduce((n,x)=>n+x.s.vencidos,0);
+
+  head.innerHTML=btnMenu()+`<div><h1>Reposições</h1>
+    <div class="sub">Quem tem direito e até quando pode repor</div></div><div class="spacer"></div>
+    ${S.isLuma?'<button class="btn sm" id="rp_regra">Regras</button>':""}`;
+  mod.innerHTML=`<div class="rolar viz">
+    <div class="kpis">
+      <div class="kpi"><b style="color:var(--good)">${comSaldo.length}</b><span>com reposição a fazer</span></div>
+      <div class="kpi"><b style="color:${vencendo.length?"var(--warning)":"var(--muted)"}">${vencendo.length}</b><span>vencendo em 7 dias</span></div>
+      <div class="kpi"><b style="color:${vencidos?"var(--critical)":"var(--muted)"}">${vencidos}</b><span>já venceram</span></div>
+      <div class="kpi"><b>${R.porMes} / ${R.validade}d</b><span>limite mês / validade</span></div>
+    </div>
+    <div class="aviso">Quem desmarca com <b>${R.horas}h</b> ou mais de antecedência ganha o direito.
+      São até <b>${R.porMes} por mês</b> e cada crédito vale <b>${R.validade} dias</b> a partir da aula desmarcada —
+      por isso quem desmarca no fim do mês ainda consegue repor no mês seguinte.</div>
+    ${linhas.length?`<div class="prev-wrap" style="max-height:none"><table class="prev">
+      <thead><tr><th>Aluno</th><th>Saldo</th><th>Vence em</th><th>Créditos</th><th style="width:200px"></th></tr></thead>
+      <tbody>${linhas.map(({al,cr,s})=>{
+        const p=s.proximo;
+        const cor=!p?"var(--muted)":(p.diasRestantes<=3?"var(--critical)":p.diasRestantes<=7?"var(--warning)":"var(--good)");
+        return `<tr>
+          <td><b>${esc(al.nome)}</b>${al.professora&&S.isLuma?`<div style="font-size:10.5px;color:${CORES[al.professora].cor};font-weight:600">${CORES[al.professora].nome}</div>`:""}</td>
+          <td><b style="color:${s.saldo>0?"var(--good)":"var(--muted)"};font-size:15px">${s.saldo}</b></td>
+          <td>${p?`<b style="color:${cor}">${p.vence.slice(8,10)}/${p.vence.slice(5,7)}</b>
+                <div style="font-size:10.5px;color:${cor}">${p.diasRestantes<=0?"vence hoje":"em "+p.diasRestantes+" dia(s)"}</div>`:"—"}</td>
+          <td style="font-size:11px;line-height:1.7">${cr.slice(-4).map(c=>{
+              const st=c.usadoEm?["usada","var(--muted)"]:c.vencido?["venceu","var(--critical)"]
+                      :c.acimaDoLimite?["acima do limite","var(--muted)"]:["disponível","var(--good)"];
+              return `<div>${c.data.slice(8,10)}/${c.data.slice(5,7)}
+                <span style="color:${st[1]}">· ${st[0]}</span>
+                ${c.usadoEm?` (${c.usadoEm.slice(8,10)}/${c.usadoEm.slice(5,7)})`:""}</div>`;}).join("")}
+            ${cr.length>4?`<div style="color:var(--muted)">+${cr.length-4} anterior(es)</div>`:""}</td>
+          <td style="white-space:nowrap">
+            ${s.saldo>0?`<button class="btn sm" data-conv="${al.id}" ${telWhats(al.telefone)?"":"disabled"}>Chamar</button>`:""}
+            <button class="btn sm" data-ajustar="${al.id}">Ajustar</button></td>
+        </tr>`;}).join("")}</tbody></table></div>`
+     :`<div class="empty">
+        <div style="font-size:30px;margin-bottom:8px">↻</div>
+        <b style="color:var(--text);font-size:15px;display:block;margin-bottom:4px">Nenhuma desmarcação registrada</b>
+        Dentro da aula, use o botão <b>↻</b> ao lado do aluno quando ele avisar que não vem.
+        É isso que gera o crédito de reposição.</div>`}
+  </div>`;
+  const rg=head.querySelector("#rp_regra");
+  if(rg)rg.onclick=()=>modalRegrasReposicao();
+  mod.querySelectorAll("[data-conv]").forEach(b=>b.onclick=()=>{
+    const al=alunaById(b.dataset.conv),s=saldoReposicao(al.id);
+    abrirWhats(al.telefone,preencher(S.cfg.msg_falta,{
+      aluna:al.nome.split(" ")[0],
+      quando:s.proximo?`até ${s.proximo.vence.slice(8,10)}/${s.proximo.vence.slice(5,7)}`:"este mês",
+      saldo:s.saldo, studio:S.cfg.nome_studio||"Studio Luma Restivo"}));
+  });
+  mod.querySelectorAll("[data-ajustar]").forEach(b=>b.onclick=()=>modalAjustarCreditos(b.dataset.ajustar));
+};
+
+/* ajuste crédito a crédito — a professora pode esticar ou cancelar */
+function modalAjustarCreditos(id){
+  const al=alunaById(id),cr=creditosReposicao(id).filter(c=>!c.semCredito);
+  const m=openModal(`<div class="modal">
+    <div class="modal-top">
+      <button class="ico-btn" data-x><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+      <h3>Reposições de ${esc(al.nome.split(" ")[0])}</h3>
+    </div>
+    <div class="modal-b">
+      <p style="font-size:13px;color:var(--muted);margin:0 0 14px;line-height:1.6">
+        Cada linha é uma aula desmarcada. Você pode esticar a validade quando combinar algo
+        diferente com ${gen(al,"a aluna","o aluno")}.</p>
+      ${cr.length?`<div class="lista-mini" style="max-height:none">${cr.slice().reverse().map(c=>{
+        const st=c.usadoEm?["usada em "+c.usadoEm.slice(8,10)+"/"+c.usadoEm.slice(5,7),"var(--muted)"]
+                :c.vencido?["venceu","var(--critical)"]
+                :c.acimaDoLimite?["acima do limite do mês","var(--muted)"]
+                :["vale até "+c.vence.slice(8,10)+"/"+c.vence.slice(5,7),"var(--good)"];
+        return `<div class="lm">
+          <span class="nm"><b>${c.data.slice(8,10)}/${c.data.slice(5,7)}/${c.data.slice(0,4)}</b>
+            <span style="color:${st[1]}"> · ${st[0]}</span></span>
+          ${c.usadoEm?"":`<button class="btn sm" data-mais="${c.id}">+15 dias</button>
+                          <button class="mini-act" data-tira="${c.id}" title="Cancelar este crédito">✕</button>`}
+        </div>`;}).join("")}</div>`
+       :'<div style="font-size:13px;color:var(--muted)">Nenhuma desmarcação registrada.</div>'}
+      <div class="hint" style="margin-top:14px">Regra atual: ${regraRepos().porMes} por mês,
+        cada uma vale ${regraRepos().validade} dias.</div>
+    </div>
+    <div class="modal-f"><button class="btn" data-x>Fechar</button></div>
+  </div>`);
+  m.querySelectorAll("[data-x]").forEach(b=>b.onclick=()=>{closeModal();render();});
+  m.querySelectorAll("[data-mais]").forEach(b=>b.onclick=async()=>{
+    const p=S.presencas.find(x=>x.id===b.dataset.mais);
+    const nova=iso(addDays(parseISO(p.credito_ate||p.data),15));
+    try{
+      const [r]=await db.update("sl_presencas",p.id,{credito_ate:nova});Object.assign(p,r);
+      closeModal();render();modalAjustarCreditos(id);
+      toast(`Validade esticada até ${nova.slice(8,10)}/${nova.slice(5,7)}.`);
+    }catch(e){toast(limparErro(e));}
+  });
+  m.querySelectorAll("[data-tira]").forEach(b=>b.onclick=async()=>{
+    if(!confirm("Cancelar este crédito de reposição?"))return;
+    const p=S.presencas.find(x=>x.id===b.dataset.tira);
+    try{
+      const [r]=await db.update("sl_presencas",p.id,{status:"falta",credito_ate:null});Object.assign(p,r);
+      closeModal();render();modalAjustarCreditos(id);toast("Crédito cancelado.");
+    }catch(e){toast(limparErro(e));}
+  });
+}
+
+function modalRegrasReposicao(){
+  const R=regraRepos();
+  const m=openModal(`<div class="modal">
+    <div class="modal-top">
+      <button class="ico-btn" data-x><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+      <h3>Regras de reposição</h3>
+    </div>
+    <div class="modal-b">
+      <div class="row3">
+        <div class="fld"><label>Reposições por mês</label>
+          <input id="rr_mes" type="number" min="0" max="10" value="${R.porMes}"></div>
+        <div class="fld"><label>Validade do crédito (dias)</label>
+          <input id="rr_val" type="number" min="1" max="180" value="${R.validade}"></div>
+        <div class="fld"><label>Antecedência mínima (horas)</label>
+          <input id="rr_hrs" type="number" min="0" max="72" step="0.5" value="${R.horas}"></div>
+      </div>
+      <div class="aviso">Hoje: até <b>${R.porMes} desmarcações por mês</b> geram crédito, cada crédito vale
+        <b>${R.validade} dias</b> a partir da data da aula, e o aluno precisa avisar com pelo menos
+        <b>${R.horas}h</b> de antecedência.</div>
+      <div class="hint">Mudar a validade vale para os <b>próximos</b> créditos. Os que já existem
+        continuam com a data que foi calculada — se precisar esticar um deles, use o botão
+        <b>Ajustar</b> na lista.</div>
+    </div>
+    <div class="modal-f">
+      <button class="btn" data-x>Cancelar</button>
+      <button class="btn pri" data-save>Salvar</button>
+    </div>
+  </div>`);
+  m.querySelectorAll("[data-x]").forEach(b=>b.onclick=closeModal);
+  m.querySelector("[data-save]").onclick=async()=>{
+    const mes=parseInt(m.querySelector("#rr_mes").value,10);
+    const val=parseInt(m.querySelector("#rr_val").value,10);
+    const hrs=parseFloat(m.querySelector("#rr_hrs").value);
+    if(isFinite(mes))await salvarConfig("reposicoes_por_mes",String(mes));
+    if(isFinite(val)&&val>0)await salvarConfig("validade_reposicao_dias",String(val));
+    if(isFinite(hrs)&&hrs>=0)await salvarConfig("horas_antecedencia",String(hrs));
+    closeModal();render();toast("Regras de reposição salvas.");
+  };
+}
+
+
+/* ---------- dar baixa: forma, taxa e valor líquido ---------- */
+function modalBaixa(p,al,depois){
+  const formaSug=(al&&al.forma_pagamento)||"pix";
+  const m=openModal(`<div class="modal">
+    <div class="modal-top">
+      <button class="ico-btn" data-x><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+      <h3>Registrar recebimento${al?" de "+esc(al.nome.split(" ")[0]):""}</h3>
+    </div>
+    <div class="modal-b">
+      <div class="row3">
+        <div class="fld"><label>Forma</label><select id="bx_forma">
+          ${FORMAS.map(f=>`<option value="${f[0]}"${f[0]===formaSug?" selected":""}>${f[1]}</option>`).join("")}
+        </select></div>
+        <div class="fld"><label>Valor cobrado (R$)</label>
+          <input id="bx_bruto" type="number" step="0.01" min="0" value="${Number(p.valor)}"></div>
+        <div class="fld"><label>Recebido em</label>
+          <input id="bx_data" type="date" value="${iso(new Date())}"></div>
+      </div>
+      <div class="row2">
+        <div class="fld"><label>Taxa da maquininha (%)</label>
+          <input id="bx_taxa" type="number" step="0.01" min="0" max="100" value="${taxaDe(formaSug)}"></div>
+        <div class="fld"><label>Entrou na conta (R$)</label>
+          <input id="bx_liq" type="number" step="0.01" min="0" value="${liquidoDe(p.valor,formaSug)}"></div>
+      </div>
+      <div class="aviso" id="bx_resumo"></div>
+      <div class="hint">A taxa vem da tabela em <b>Ajustes → Preços</b>, mas você pode corrigir aqui
+        quando a maquininha cobrar diferente (parcelamento, antecipação).</div>
+    </div>
+    <div class="modal-f">
+      <button class="btn" data-x>Cancelar</button>
+      <button class="btn pri" data-ok>Confirmar recebimento</button>
+    </div>
+  </div>`);
+  const g=i=>m.querySelector("#bx_"+i);
+  const calc=(daForma)=>{
+    if(daForma)g("taxa").value=taxaDe(g("forma").value);
+    const bruto=parseFloat(g("bruto").value)||0,tx=parseFloat(g("taxa").value)||0;
+    g("liq").value=(Math.round(bruto*(1-tx/100)*100)/100).toFixed(2);
+    mostra();
+  };
+  const mostra=()=>{
+    const bruto=parseFloat(g("bruto").value)||0,liq=parseFloat(g("liq").value)||0;
+    const dif=Math.round((bruto-liq)*100)/100;
+    g("resumo").innerHTML=dif>0
+      ? `Cobrado <b>${fmtBRL(bruto)}</b> · taxa <b>${fmtBRL(dif)}</b> · entra <b>${fmtBRL(liq)}</b>`
+      : `Entra <b>${fmtBRL(liq)}</b>, sem taxa.`;
+  };
+  g("forma").onchange=()=>calc(true);
+  g("bruto").oninput =()=>calc(false);
+  g("taxa").oninput  =()=>calc(false);
+  g("liq").oninput   =()=>{
+    const bruto=parseFloat(g("bruto").value)||0,liq=parseFloat(g("liq").value)||0;
+    g("taxa").value=bruto>0?(Math.round((1-liq/bruto)*10000)/100).toFixed(2):0;
+    mostra();
+  };
+  calc(false);
+  m.querySelectorAll("[data-x]").forEach(b=>b.onclick=closeModal);
+  m.querySelector("[data-ok]").onclick=async()=>{
+    const bruto=parseFloat(g("bruto").value)||0,tx=parseFloat(g("taxa").value)||0;
+    const liq=parseFloat(g("liq").value);
+    try{
+      const [r]=await db.update("sl_pagamentos",p.id,{
+        pago_em:g("data").value||iso(new Date()),
+        forma:g("forma").value, valor:bruto,
+        valor_pago:isFinite(liq)?liq:bruto,
+        taxa_pct:tx, taxa_valor:Math.round((bruto-(isFinite(liq)?liq:bruto))*100)/100,
+        liquido:isFinite(liq)?liq:bruto});
+      Object.assign(p,r);closeModal();
+      if(depois)depois();else render();
+      toast("Recebimento registrado.");
     }catch(e){toast(limparErro(e));}
   };
 }
