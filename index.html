@@ -653,13 +653,58 @@ const CFG = {
 /* modelo de planilha embutido (.xlsx em base64) — o botão "Baixar modelo" usa isto */
 const MODELO_XLSX = "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";
 
-const SLUGS = ["lara","vitoria","nicoli","luma"];
-const CORES = {
-  lara   :{nome:"Lara",    cor:"#E85D9B", soft:"#FDEAF3"},
-  vitoria:{nome:"Vitória", cor:"#F08A2E", soft:"#FDF0E2"},
-  nicoli :{nome:"Nicoli",  cor:"#2E7FE8", soft:"#E6F0FD"},
-  luma   :{nome:"Luma",    cor:"#1FA97A", soft:"#E4F6EF"}
+/* A equipe vem do banco (tabela sl_professoras) — a Luma cadastra e edita
+   pelo módulo Equipe. Isto aqui embaixo é só o que a tela de login usa
+   antes de existir sessão, e o que vale se o banco não responder. */
+const PADRAO = {
+  lara   :{nome:"Lara",    cor:"#E85D9B", soft:"#FDEAF3", ordem:1},
+  vitoria:{nome:"Vitória", cor:"#F08A2E", soft:"#FDF0E2", ordem:2},
+  nicoli :{nome:"Nicolly", cor:"#2E7FE8", soft:"#E6F0FD", ordem:3},
+  luma   :{nome:"Luma",    cor:"#1FA97A", soft:"#E4F6EF", ordem:4}
 };
+const SEM_DONA = {nome:"Sem dona", cor:"#9aa0a6", soft:"#f1f3f4", ordem:99};
+let _equipe = {...PADRAO};
+let SLUGS   = Object.keys(PADRAO);
+/* CORES[slug] nunca devolve undefined: professora antiga/apagada ainda
+   aparece com um nome, em vez de quebrar a tela inteira. */
+const CORES = new Proxy({},{
+  get(_,k){ if(typeof k!=="string") return undefined;
+            return _equipe[k] || {...SEM_DONA, nome:k||"Sem dona"}; },
+  has:(_,k)=>k in _equipe,
+  ownKeys:()=>Reflect.ownKeys(_equipe),
+  getOwnPropertyDescriptor:(_,k)=>({enumerable:true,configurable:true,value:_equipe[k]})
+});
+function aplicarEquipe(linhas){
+  if(!Array.isArray(linhas)||!linhas.length) return;
+  _equipe={};
+  linhas.forEach(p=>{ _equipe[p.slug]={nome:p.nome, cor:p.cor, soft:p.cor_suave,
+                                      ordem:p.ordem??99, ativo:p.ativo!==false,
+                                      papel:p.papel||"professora"}; });
+  ordenarSlugs();
+}
+/* Quem tem agenda no Studio: quem está ativa e não é da recepção.
+   Continua na lista quem ainda tiver aula ou aluno no nome dela. */
+function ordenarSlugs(extras=[]){
+  const dentro=Object.keys(_equipe).filter(s=>
+    (_equipe[s].ativo!==false&&_equipe[s].papel!=="recepcao")||extras.includes(s));
+  SLUGS=dentro.sort((a,b)=>(_equipe[a].ordem??99)-(_equipe[b].ordem??99)||
+                            String(_equipe[a].nome).localeCompare(String(_equipe[b].nome)));
+  if(!SLUGS.length) SLUGS=Object.keys(_equipe);
+}
+/* Tirar o acesso de alguém NÃO apaga a agenda dela: enquanto ainda houver
+   aula ou aluno no nome dela, ela continua aparecendo nos filtros. */
+function revisarSlugs(){
+  const comHistorico=new Set();
+  S.aulas.forEach(a=>a.professora&&comHistorico.add(a.professora));
+  S.alunas.forEach(a=>a.professora&&comHistorico.add(a.professora));
+  ordenarSlugs([...comHistorico]);
+}
+const PAPEIS = [
+  ["gestora",   "Gestora",    "Vê o Studio inteiro: agendas, alunos, financeiro e contas a pagar."],
+  ["professora","Professora", "Vê só a carteira dela: as aulas e os alunos dela."],
+  ["recepcao",  "Recepção",   "Vê a agenda e os alunos de todas para marcar aula, mas não vê dinheiro."]
+];
+const rotuloPapel = p => (PAPEIS.find(x=>x[0]===p)||[,"—"])[1];
 const DOW  = ["Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado"];
 const DOW3 = ["dom","seg","ter","qua","qui","sex","sáb"];
 const DOW1 = ["D","S","T","Q","Q","S","S"];
@@ -690,7 +735,8 @@ function lerSessao(){try{SES=JSON.parse(localStorage.getItem("sl_sessao")||"null
 function gravarSessao(j,emailFallback){
   SES={access_token:j.access_token,refresh_token:j.refresh_token,
        expira_em:Date.now()+((j.expires_in||3600)*1000),
-       email:(j.user&&j.user.email)||emailFallback||(SES&&SES.email)||""};
+       email:(j.user&&j.user.email)||emailFallback||(SES&&SES.email)||"",
+       user_id:(j.user&&j.user.id)||(SES&&SES.user_id)||null};
   localStorage.setItem("sl_sessao",JSON.stringify(SES));
 }
 function limparSessao(){SES=null;localStorage.removeItem("sl_sessao");}
@@ -746,12 +792,28 @@ const db={
   list:(t,q="select=*")=>req(`${t}?${q}`),
   insert:(t,row)=>req(t,{method:"POST",body:JSON.stringify(row),headers:{Prefer:"return=representation"}}),
   update:(t,id,row)=>req(`${t}?id=eq.${id}`,{method:"PATCH",body:JSON.stringify(row),headers:{Prefer:"return=representation"}}),
-  remove:(t,id)=>req(`${t}?id=eq.${id}`,{method:"DELETE"})
+  remove:(t,id)=>req(`${t}?id=eq.${id}`,{method:"DELETE"}),
+  rpc:(f,args={})=>req(`rpc/${f}`,{method:"POST",body:JSON.stringify(args)})
 };
+
+/* ---------- administração da equipe ----------
+   Criar login, trocar senha e mudar função rodam numa função no servidor
+   (Supabase Edge Function). A chave de administrador fica lá, nunca aqui
+   dentro do HTML — e do lado de lá só passa quem é gestora.            */
+async function chamarEquipe(acao,dados={}){
+  const r=await fetch(CFG.SUPABASE_URL+"/functions/v1/equipe",{
+    method:"POST",
+    headers:{apikey:KEY,Authorization:"Bearer "+(SES?SES.access_token:""),"Content-Type":"application/json"},
+    body:JSON.stringify({acao,...dados})
+  });
+  let j={};try{j=await r.json();}catch(e){}
+  if(!r.ok||j.erro) throw new Error(j.erro||`Não consegui falar com o servidor (${r.status}).`);
+  return j;
+}
 
 /* ---------- estado ---------- */
 const S={
-  perfil:null, prof:"luma", isLuma:false, view:"semana",
+  perfil:null, prof:"luma", papel:"professora", isLuma:false, veTodas:false, view:"semana",
   anchor:new Date(), miniAnchor:new Date(),
   visible:new Set(SLUGS),
   aulas:[], alunas:[], matriculas:[], excecoes:[], presencas:[], pagamentos:[], cfg:{}, repasses:[], pagProf:[],
@@ -823,15 +885,31 @@ function msgErro(e){
   if(s.includes("email not confirmed")) return "Conta ainda não confirmada no Supabase.";
   if(s.includes("rate limit")||s.includes("too many"))
     return "Muitas tentativas seguidas. Espere um minuto e tente outra vez.";
-  if(s.includes("nenhuma professora")) return e.message;
+  if(s.includes("nenhuma professora")||s.includes("desativado")) return e.message;
   return "Não consegui entrar: "+((e&&e.message)||e);
 }
 
 async function abrirApp(){
-  const perfis=await db.list("sl_perfis","select=*");
+  /* Quem sou eu: o id vem do próprio Auth. A gestora enxerga a linha de
+     todo mundo em sl_perfis, então NUNCA dá para pegar "a primeira". */
+  let meuId=(SES&&SES.user_id)||null;
+  if(!meuId){
+    const r=await fetch(AUTH+"user",{headers:H()});
+    const j=await r.json().catch(()=>null);
+    meuId=j&&j.id;
+    if(meuId&&SES){SES.user_id=meuId;localStorage.setItem("sl_sessao",JSON.stringify(SES));}
+  }
+  if(!meuId) throw new Error("Não consegui confirmar quem está entrando. Entre de novo.");
+  const perfis=await db.list("sl_perfis","select=*&user_id=eq."+meuId);
   if(!perfis||!perfis.length)
     throw new Error("Esta conta não está ligada a nenhuma professora. Avise o Adilson.");
   S.perfil=perfis[0];
+  /* a gestora pode ter tirado o acesso desta pessoa */
+  const eq=await db.list("sl_professoras",`select=*`).catch(()=>null);
+  aplicarEquipe(eq);
+  const eu=(eq||[]).find(p=>p.slug===S.perfil.professora);
+  if(eu&&eu.ativo===false)
+    throw new Error("O seu acesso ao sistema foi desativado pela gestora do Studio.");
   const lock=document.getElementById("lock");if(lock)lock.remove();
   document.getElementById("app").hidden=false;
   await boot();
@@ -843,22 +921,24 @@ async function abrirApp(){
 async function boot(){
   // quem você é vem do LOGIN, não da URL
   S.prof=S.perfil.professora;
-  S.isLuma=S.perfil.papel==="gestora";
+  S.papel=S.perfil.papel||"professora";
+  S.isLuma =S.papel==="gestora";                       // manda no dinheiro e nas regras
+  S.veTodas=S.papel==="gestora"||S.papel==="recepcao"; // enxerga a agenda de todas
   const c=CORES[S.prof];
   document.documentElement.style.setProperty("--prof",c.cor);
   document.documentElement.style.setProperty("--prof-soft",c.soft);
-  document.title=(S.isLuma?"Studio Luma Restivo":c.nome)+" — CRM do Studio";
+  document.title=(S.veTodas?"Studio Luma Restivo":c.nome)+" — CRM do Studio";
 
   document.getElementById("railMark").textContent=c.nome[0];
   document.getElementById("railMark").style.background=c.cor;
   document.getElementById("userAv").textContent=c.nome[0];
   document.getElementById("userAv").style.background=c.cor;
-  document.getElementById("userNome").textContent=c.nome+(S.isLuma?" · gestora":"");
+  document.getElementById("userNome").textContent=c.nome+(S.papel!=="professora"?" · "+rotuloPapel(S.papel).toLowerCase():"");
   document.getElementById("userMail").textContent=(SES&&SES.email)||"";
   document.getElementById("userMail").title=(SES&&SES.email)||"";
   document.getElementById("btnSair").onclick=()=>{if(confirm("Sair da conta?"))sair();};
 
-  S.visible = S.isLuma ? new Set(SLUGS) : new Set([S.prof]);
+  S.visible = S.veTodas ? new Set(SLUGS) : new Set([S.prof]);
   S.modulo="inicio";
   if(window.innerWidth<900) S.view="dia";
   bindUI();
@@ -944,7 +1024,8 @@ async function loadAll(){
   // antigo fica no banco, mas não precisa vir para a tela (nem estourar limite)
   const corte=iso(addDays(new Date(),-180));
   try{
-    const [aulas,alunas,mat,exc,pres,pag,cfg,rep,pgp]=await Promise.all([
+    const [equipe,aulas,alunas,mat,exc,pres,pag,cfg,rep,pgp]=await Promise.all([
+      db.list("sl_professoras","select=*&order=ordem").catch(()=>null),
       db.list("sl_aulas","select=*&ativo=eq.true&order=hora_inicio&limit=5000"),
       db.list("sl_alunas","select=*&ativo=eq.true&order=nome&limit=5000"),
       db.list("sl_matriculas","select=*&ativo=eq.true&limit=20000"),
@@ -955,7 +1036,11 @@ async function loadAll(){
       S.perfil&&S.perfil.papel==="gestora"?db.list("sl_repasses","select=*").catch(()=>[]):Promise.resolve([]),
       S.perfil&&S.perfil.papel==="gestora"?db.list("sl_pagamentos_prof","select=*&limit=5000").catch(()=>[]):Promise.resolve([])
     ]);
+    aplicarEquipe(equipe);
     S.aulas=aulas||[];S.alunas=alunas||[];S.matriculas=mat||[];S.excecoes=exc||[];S.presencas=pres||[];
+    revisarSlugs();
+    if(S.veTodas) S.visible=new Set([...S.visible].filter(s=>SLUGS.includes(s)));
+    if(!S.visible.size) S.visible=new Set(S.veTodas?SLUGS:[S.prof]);
     S.pagamentos=pag||[];
     S.cfg={};(cfg||[]).forEach(c=>S.cfg[c.chave]=c.valor);
     S.repasses=rep||[];S.pagProf=pgp||[];
@@ -1039,6 +1124,7 @@ const ICO={
   financeiro:'<path d="M3 3v18h18M7 15l4-4 3 3 5-6"/>',
   contas:'<path d="M20 21H4a2 2 0 01-2-2V7h20v12a2 2 0 01-2 2zM2 7l2.5-4h15L22 7M9 13h6"/>',
   reposicoes:'<path d="M3 12a9 9 0 019-9 9 9 0 016.36 2.64L21 8M21 3v5h-5M21 12a9 9 0 01-9 9 9 9 0 01-6.36-2.64L3 16M3 21v-5h5"/>',
+  equipe:'<path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8M19 8v6M22 11h-6"/>',
   ajustes:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 008 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.65 1.65 0 004.6 15a1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.6a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9c.14.36.44.63.8.77H21a2 2 0 110 4h-.09c-.36.14-.66.41-.8.77z"/>'
 };
 const MODULOS=[
@@ -1048,9 +1134,10 @@ const MODULOS=[
     {id:"alunos",    nome:"Alunos"},
     {id:"reposicoes",nome:"Reposições"}]},
   {g:"Dinheiro", itens:[
-    {id:"financeiro",nome:"Financeiro"},
+    {id:"financeiro",nome:"Financeiro", semRecepcao:true},
     {id:"contas",    nome:"Contas a pagar", soGestora:true}]},
   {g:"Studio", itens:[
+    {id:"equipe",    nome:"Equipe", soGestora:true},
     {id:"ajustes",   nome:"Ajustes"}]}
 ];
 function pendencias(){
@@ -1066,7 +1153,7 @@ function pendencias(){
 function renderRail(){
   const P=pendencias(), bad={financeiro:P.atrasados+P.renov, reposicoes:P.repVencendo||0};
   document.getElementById("railNav").innerHTML=MODULOS.map(sec=>{
-    const itens=sec.itens.filter(i=>!i.soGestora||S.isLuma);
+    const itens=sec.itens.filter(i=>(!i.soGestora||S.isLuma)&&!(i.semRecepcao&&S.papel==="recepcao"));
     if(!itens.length)return "";
     return (sec.g?`<div class="rail-sec">${sec.g}</div>`:"")+itens.map(i=>
       `<button class="nav-item ${S.modulo===i.id?"on":""}" data-mod="${i.id}">
@@ -1297,7 +1384,7 @@ function renderMini(box,fechaAoEscolher){
 
 function renderCals(){
   const box=document.getElementById("calsBox");
-  if(!S.isLuma){
+  if(!S.veTodas){
     const c=CORES[S.prof];
     box.innerHTML=`<p class="side-title">Agenda</p>
       <ul class="cal-list"><li style="cursor:default">
@@ -1328,7 +1415,7 @@ function renderCals(){
 function renderChips(){
   const box=document.getElementById("agChips");
   if(!box)return;
-  if(!S.isLuma){box.innerHTML="";return;}
+  if(!S.veTodas){box.innerHTML="";return;}
   const todas=S.visible.size===SLUGS.length;
   let h=`<button class="chip todas ${todas?"on":"off"}" data-todas>Todas</button>`;
   SLUGS.forEach(s=>{
@@ -1358,7 +1445,7 @@ function viewGrade(isDia){
   const dias = isDia ? [new Date(S.anchor)] : Array.from({length:7},(_,i)=>addDays(startWeek(S.anchor),i));
 
   /* colunas: no modo dia da Luma, divide por professora */
-  const splitProf = isDia && S.isLuma && S.visible.size>1 && window.innerWidth>=900;
+  const splitProf = isDia && S.veTodas && S.visible.size>1 && window.innerWidth>=900;
   const colDefs = splitProf
     ? [...S.visible].sort((a,b)=>SLUGS.indexOf(a)-SLUGS.indexOf(b)).map(s=>({date:dias[0],prof:s}))
     : dias.map(d=>({date:d,prof:null}));
@@ -1457,7 +1544,7 @@ function evEl(o,date){
   const capIco=`<span class="cap" style="color:${cheia?"#c5221f":shade(c.cor,-30)}">${oc}/${a.capacidade}${cheia?" · lotada":""}</span>`;
   el.innerHTML = dur<=30
     ? `<b>${fmtH(a.hora_inicio)} ${esc(a.titulo)}</b><span class="t">${oc}/${a.capacidade}</span>`
-    : `<b>${esc(a.titulo)}</b><div class="t">${hm(a.hora_inicio)}–${hm(a.hora_fim)}${S.isLuma&&S.visible.size>1&&!emMobile()?" · "+c.nome:""}</div>${dur>=45?capIco:""}`;
+    : `<b>${esc(a.titulo)}</b><div class="t">${hm(a.hora_inicio)}–${hm(a.hora_fim)}${S.veTodas&&S.visible.size>1&&!emMobile()?" · "+c.nome:""}</div>${dur>=45?capIco:""}`;
   if(!o.cancel) el.insertAdjacentHTML("beforeend",'<div class="ev-resize"></div>');
   el.onclick=ev=>{ev.stopPropagation();if(!el.dataset.moved)modalDetalhe(a.id,o.data);};
   return el;
@@ -1637,7 +1724,7 @@ function shade(hex,p){
 /* ---------- criar / editar aula ---------- */
 function modalAula(aulaId,seed){
   const a=aulaId?S.aulas.find(x=>x.id===aulaId):null;
-  const prof=a?a.professora:(seed?.prof||(S.isLuma?"luma":S.prof));
+  const prof=a?a.professora:(seed?.prof||S.prof);
   const tipo=a?a.tipo:"fixa";
   const date=seed?.date||(a&&a.data?parseISO(a.data):new Date(S.anchor));
   const ini=a?toMin(a.hora_inicio):(seed?.hora??8*60);
@@ -1659,7 +1746,7 @@ function modalAula(aulaId,seed){
         ${S.isLuma?'<div class="hint" style="margin:6px 0 0">Para editar a lista: Ajustes → Modalidades.</div>':""}
       </div>
       <div class="row2">
-        <div class="fld"><label>Professora</label><select id="f_prof" ${S.isLuma?"":"disabled"}>
+        <div class="fld"><label>Professora</label><select id="f_prof" ${S.veTodas?"":"disabled"}>
           ${SLUGS.map(s=>`<option value="${s}" ${s===prof?"selected":""}>${CORES[s].nome}</option>`).join("")}
         </select></div>
         <div class="fld"><label>Vagas na turma</label><input id="f_cap" type="number" min="1" max="20" value="${a?a.capacidade:CFG.CAPACIDADE}"></div>
@@ -1695,7 +1782,7 @@ function modalAula(aulaId,seed){
     if(!nova){e.target.selectedIndex=0;return;}
     const lista=modalidades();
     if(!lista.some(x=>chave(x)===chave(nova))){
-      if(!S.isLuma){toast("Só a Luma pode criar modalidade nova.");e.target.selectedIndex=0;return;}
+      if(!S.isLuma){toast("Só a gestora pode criar modalidade nova.");e.target.selectedIndex=0;return;}
       await salvarConfig("modalidades",JSON.stringify(lista.concat(nova)));
     }
     e.target.insertAdjacentHTML("afterbegin",`<option value="${esc(nova)}" selected>${esc(nova)}</option>`);
@@ -1857,14 +1944,24 @@ function modalDetalhe(aulaId,d){
         </div>`;}).join(""):'<div style="font-size:13px;color:var(--muted);padding:6px 2px">Nenhuma aluna nesta aula ainda.</div>'}</div>
 
       <h4>Adicionar na aula</h4>
+      ${S.veTodas?`<div class="fld" style="margin-bottom:8px">
+        <label>Buscar aluno em</label>
+        <select id="f_base">
+          <option value="${esc(a.professora)}">Alunos da ${esc(CORES[a.professora].nome)}</option>
+          ${SLUGS.filter(sl=>sl!==a.professora&&S.alunas.some(x=>x.professora===sl)).map(sl=>
+            `<option value="${sl}">Alunos da ${esc(CORES[sl].nome)}</option>`).join("")}
+          <option value="__sem">Alunos sem dona</option>
+          <option value="__todos">Todos os alunos do Studio</option>
+        </select></div>`:""}
       <div class="addal">
-        <input id="f_al" list="alunasList" placeholder="Nome do aluno" ${oc>=a.capacidade?"":""}>
+        <input id="f_al" list="alunasList" placeholder="Nome do aluno" autocomplete="off">
         <select id="f_alt" style="width:130px;padding:9px;border:1px solid var(--line);border-radius:8px">
           <option value="fixa">Fixa</option><option value="experimental">Experimental</option><option value="reposicao">Reposição</option>
         </select>
         <button class="btn pri sm" data-add>Add</button>
       </div>
-      <datalist id="alunasList">${S.alunas.map(x=>`<option value="${esc(x.nome)}">`).join("")}</datalist>
+      <datalist id="alunasList"></datalist>
+      <div class="hint" id="f_base_txt" style="margin:8px 0 0"></div>
       <div class="hint" style="margin-top:8px">Matrícula <b>fixa</b> ocupa vaga em todas as semanas. <b>Experimental</b> e <b>reposição</b> entram só nesta data (${date.getDate()}/${date.getMonth()+1}).</div>
     </div>
     <div class="modal-f" style="justify-content:space-between">
@@ -1880,6 +1977,30 @@ function modalDetalhe(aulaId,d){
 
   m.querySelectorAll("[data-x]").forEach(b=>b.onclick=closeModal);
   m.querySelector("[data-edit]").onclick=()=>{closeModal();modalAula(a.id,null);};
+
+  /* a lista suspensa já vem com os alunos de quem dá a aula.
+     A gestora troca a base no seletor quando precisa puxar de outra. */
+  const baseSel=m.querySelector("#f_base");
+  function baseDeAlunos(){
+    const v=baseSel?baseSel.value:a.professora;
+    if(v==="__todos") return {lista:minhasAlunas(), txt:"Mostrando todos os alunos do Studio."};
+    if(v==="__sem")   return {lista:minhasAlunas().filter(x=>!x.professora),
+                              txt:"Mostrando só os alunos que ainda não têm professora responsável."};
+    const nome=CORES[v].nome;
+    const lista=minhasAlunas().filter(x=>x.professora===v);
+    return {lista, txt:lista.length
+      ? `Mostrando os ${lista.length} aluno(s) da ${nome}. Troque acima para buscar em outra base.`
+      : `A ${nome} ainda não tem aluno na carteira. Troque acima para buscar em outra base.`};
+  }
+  function montarLista(){
+    const {lista,txt}=baseDeAlunos();
+    const dl=m.querySelector("#alunasList");
+    if(dl)dl.innerHTML=lista.map(x=>`<option value="${esc(x.nome)}">`).join("");
+    const h=m.querySelector("#f_base_txt");
+    if(h)h.textContent=S.veTodas?txt:"";
+  }
+  if(baseSel)baseSel.onchange=()=>{m.querySelector("#f_al").value="";montarLista();};
+  montarLista();
 
   m.querySelector("[data-add]").onclick=async()=>{
     const nome=m.querySelector("#f_al").value.trim();
@@ -1897,7 +2018,8 @@ function modalDetalhe(aulaId,d){
         Object.assign(a,au);
       }
       let al=S.alunas.find(x=>x.nome.toLowerCase()===nome.toLowerCase());
-      if(!al){const [r]=await db.insert("sl_alunas",{nome});S.alunas.push(r);al=r;}
+      /* aluno novo digitado direto na aula já nasce na carteira de quem dá a aula */
+      if(!al){const [r]=await db.insert("sl_alunas",{nome,professora:a.professora});S.alunas.push(r);al=r;}
       if(tipo==="reposicao"){
         const s=saldoReposicao(al.id,date);
         if(s.saldo<=0&&!confirm(
@@ -1911,7 +2033,7 @@ function modalDetalhe(aulaId,d){
       if(conf.length){
         const c0=conf[0],cp=CORES[c0.professora];
         if(!confirm(`${al.nome} já está em "${c0.titulo}" (${hm(c0.hora_inicio)}–${hm(c0.hora_fim)}`+
-                    `${S.isLuma?", com a "+cp.nome:""}) no mesmo horário.\n\nColocar nas duas mesmo assim?`)) return;
+                    `${S.veTodas?", com a "+cp.nome:""}) no mesmo horário.\n\nColocar nas duas mesmo assim?`)) return;
       }
       const [mt]=await db.insert("sl_matriculas",{aula_id:a.id,aluna_id:al.id,tipo,data:tipo==="fixa"?null:d});
       S.matriculas.push(mt);
@@ -2149,7 +2271,7 @@ function modalAlunas(alvo){
       </div>
       <div class="fld"><label>Professora responsável</label><select id="n_prof">
         <option value="">Sem dona (aluna do Studio)</option>
-        ${SLUGS.filter(s=>S.isLuma||s===S.prof).map(s=>`<option value="${s}"${s===S.prof?" selected":""}>${CORES[s].nome}</option>`).join("")}
+        ${SLUGS.filter(s=>S.veTodas||s===S.prof).map(s=>`<option value="${s}"${s===S.prof?" selected":""}>${CORES[s].nome}</option>`).join("")}
       </select></div>
       <button class="btn pri sm" data-new style="margin-bottom:4px">Cadastrar</button>
       </div></details>
@@ -2223,7 +2345,7 @@ function modalEditarAluna(id,volta){
       </div>
       <div class="fld"><label>Professora responsável</label><select id="e_prof">
         <option value="">Sem dona (aluna do Studio)</option>
-        ${SLUGS.filter(s=>S.isLuma||s===S.prof||s===al.professora).map(s=>
+        ${SLUGS.filter(s=>S.veTodas||s===S.prof||s===al.professora).map(s=>
           `<option value="${s}"${al.professora===s?" selected":""}>${CORES[s].nome}</option>`).join("")}
       </select></div>
       <div class="fld"><label>Observação</label><textarea id="e_obs" rows="2">${esc(al.obs||"")}</textarea></div>
@@ -2477,7 +2599,7 @@ function interpretar(matriz){
     if(pr===undefined){o.erros.push(`professora "${String(o.professora).trim()}" não existe`);o.professora=null;}
     else{
       o.professora=pr;
-      if(pr&&!S.isLuma&&pr!==S.prof) o.erros.push(`é aluna da ${CORES[pr].nome} — você só pode importar as suas`);
+      if(pr&&!S.veTodas&&pr!==S.prof) o.erros.push(`é aluna da ${CORES[pr].nome} — você só pode importar as suas`);
     }
 
     // duplicada dentro da própria planilha
@@ -2506,7 +2628,7 @@ function modalImportar(alvo){
       <div class="steps"><div class="on"></div><div></div><div></div></div>
       <p style="font-size:13px;color:var(--muted);line-height:1.6;margin:0 0 16px">
         Suba a planilha com o cadastro das alunas — nome, WhatsApp, plano, valor, vencimento e professora.
-        Você confere tudo na tela antes de gravar. ${S.isLuma?"":"<b>Você só consegue importar alunas da sua agenda.</b>"}
+        Você confere tudo na tela antes de gravar. ${S.veTodas?"":"<b>Você só consegue importar alunas da sua agenda.</b>"}
       </p>
       <button class="btn sm" data-modelo style="margin-bottom:14px">⬇ Baixar modelo de planilha</button>
       <div class="drop" id="drop">
@@ -2776,7 +2898,7 @@ function quandoTexto(d){
 }
 /* alunas que esta conta administra */
 function minhasAlunas(){
-  return S.isLuma?S.alunas:S.alunas.filter(a=>a.professora===S.prof);
+  return S.veTodas?S.alunas:S.alunas.filter(a=>a.professora===S.prof);
 }
 async function salvarConfig(chave,valor){
   S.cfg[chave]=valor;
@@ -2882,7 +3004,7 @@ function modalLembretes(dataRef,alvo){
         </div>`;}).join("");
       return `<h4 style="display:flex;align-items:center;gap:8px">
           <i style="width:9px;height:9px;border-radius:50%;background:${c.cor};display:inline-block"></i>
-          ${hm(a.hora_inicio)} · ${esc(a.titulo)} ${S.isLuma?"· "+c.nome:""}</h4>${linhas}`;
+          ${hm(a.hora_inicio)} · ${esc(a.titulo)} ${S.veTodas?"· "+c.nome:""}</h4>${linhas}`;
     }).join("");
 
     document.getElementById("lem").innerHTML=`
@@ -3486,7 +3608,7 @@ VIEWS.inicio=function(head,mod){
   mod.innerHTML=`<div class="rolar viz">
     <div class="kpis" style="margin-bottom:18px">
       <div class="kpi"><b>${occHoje.length}</b><span>aulas hoje</span></div>
-      <div class="kpi"><b>${alunosAtivos}</b><span>alunos ${S.isLuma?"no Studio":"na sua carteira"}</span></div>
+      <div class="kpi"><b>${alunosAtivos}</b><span>alunos ${S.veTodas?"no Studio":"na sua carteira"}</span></div>
       <div class="kpi"><b style="color:${P.renov?"var(--warning)":"var(--muted)"}">${P.renov}</b><span>renovações</span></div>
       <div class="kpi"><b style="color:${P.atrasados?"var(--critical)":"var(--muted)"}">${P.atrasados}</b><span>em atraso</span></div>
     </div>
@@ -3499,7 +3621,7 @@ VIEWS.inicio=function(head,mod){
           return `<div class="lm" data-aula="${o.aula.id}" data-d="${o.data}" style="cursor:pointer">
             <span style="width:8px;height:8px;border-radius:50%;background:${cc.cor};flex-shrink:0"></span>
             <span class="nm"><b>${hm(o.aula.hora_inicio)}</b> ${esc(o.aula.titulo)}
-              ${S.isLuma?`<span style="color:var(--muted)"> · ${cc.nome}</span>`:""}</span>
+              ${S.veTodas?`<span style="color:var(--muted)"> · ${cc.nome}</span>`:""}</span>
             <span style="font-size:11.5px;font-weight:600;color:${oc>=o.aula.capacidade?"var(--critical)":"var(--muted)"}">${oc}/${o.aula.capacidade}</span>
           </div>`;}).join("")}</div>`:""}
       </div>
@@ -3542,7 +3664,7 @@ VIEWS.inicio=function(head,mod){
 /* ---------- ALUNOS ---------- */
 VIEWS.alunos=function(head,mod){
   head.innerHTML=btnMenu()+`<div><h1>Alunos <span style="color:var(--muted);font-weight:400">${minhasAlunas().length}</span></h1>
-    <div class="sub">${S.isLuma?"Todos os alunos do Studio":"Somente a sua carteira"}</div></div>
+    <div class="sub">${S.veTodas?"Todos os alunos do Studio":"Somente a sua carteira"}</div></div>
     <div class="spacer"></div>
     <button class="btn sm" data-ir="ajustes">Importar planilha</button>`;
   mod.innerHTML='<div class="rolar" id="dest"></div>';
@@ -3552,6 +3674,7 @@ VIEWS.alunos=function(head,mod){
 
 /* ---------- FINANCEIRO ---------- */
 VIEWS.financeiro=function(head,mod){
+  if(S.papel==="recepcao"){S.modulo="inicio";return render();}
   const aba=S.abaFin||"painel";
   head.innerHTML=btnMenu()+`<div><h1>Financeiro</h1>
     <div class="sub">${S.isLuma?"Studio inteiro":"Somente a sua carteira"}</div></div>
@@ -3565,6 +3688,206 @@ VIEWS.financeiro=function(head,mod){
 };
 
 /* ---------- AJUSTES ---------- */
+/* ---------- EQUIPE (só a gestora) ---------- */
+const CORES_SUGERIDAS=[
+  ["#E85D9B","#FDEAF3"],["#F08A2E","#FDF0E2"],["#2E7FE8","#E6F0FD"],["#1FA97A","#E4F6EF"],
+  ["#7B61FF","#EFECFF"],["#D6455D","#FCE9EC"],["#0FA3B1","#E2F5F7"],["#B06000","#FEF3E0"],
+  ["#6A7D8B","#EEF1F3"],["#8E44AD","#F4EAF8"]
+];
+VIEWS.equipe=function(head,mod){
+  if(!S.isLuma){S.modulo="inicio";return render();}
+  head.innerHTML=btnMenu()+`<div><h1>Equipe</h1>
+    <div class="sub">Quem entra no sistema e o que cada uma enxerga</div></div><div class="spacer"></div>
+    <button class="btn pri sm" id="eq_novo">Adicionar pessoa</button>`;
+  mod.innerHTML='<div class="rolar" id="dest"><div class="empty">Carregando a equipe…</div></div>';
+  head.querySelector("#eq_novo").onclick=()=>modalPessoa(null);
+  desenhar();
+
+  async function desenhar(){
+    const d=document.getElementById("dest");
+    if(!d)return;
+    let linhas=[];
+    try{ linhas=await db.rpc("sl_equipe")||[]; }
+    catch(e){
+      d.innerHTML=`<div class="erro-box">Não consegui carregar a equipe: ${esc(limparErro(e))}</div>`;
+      return;
+    }
+    const ativos=linhas.filter(x=>x.ativo!==false),inativos=linhas.filter(x=>x.ativo===false);
+    const ficha=x=>{
+      const c=CORES[x.professora];
+      const eu=x.professora===S.prof;
+      const alunos=S.alunas.filter(a=>a.professora===x.professora).length;
+      const aulas =S.aulas.filter(a=>a.professora===x.professora).length;
+      return `<div class="al" style="align-items:flex-start">
+        <span class="av" style="background:${x.cor||c.cor}">${esc((x.nome||"?").trim()[0]).toUpperCase()}</span>
+        <span class="nm">
+          <b>${esc(x.nome||x.professora)}${eu?' <span style="font-weight:400;color:var(--muted)">(você)</span>':""}</b>
+          <span>${esc(x.email||"")}</span>
+          <span>${aulas} aula(s) · ${alunos} aluno(s)${x.ultimo_acesso
+            ?" · entrou "+new Date(x.ultimo_acesso).toLocaleDateString("pt-BR"):" · nunca entrou"}</span>
+        </span>
+        <span class="tag" style="background:${x.cor_suave||c.soft};color:${shade(x.cor||c.cor,-40)}">${rotuloPapel(x.papel)}</span>
+        ${x.ativo===false?'<span class="tag falta">sem acesso</span>':""}
+        <span class="acs">
+          <button class="mini-act" data-ed="${x.professora}" title="Editar">✎</button>
+          <button class="mini-act" data-senha="${x.professora}" title="Trocar a senha">🔑</button>
+          <button class="mini-act" data-ativo="${x.professora}" data-para="${x.ativo===false?1:0}"
+            title="${x.ativo===false?"Devolver o acesso":"Tirar o acesso"}">${x.ativo===false?"↺":"✕"}</button>
+        </span>
+      </div>`;
+    };
+    d.innerHTML=`
+      <div class="aviso" style="background:#e8f0fe;border-color:#c6dafc;color:#174ea6">
+        A função define o que a pessoa vê quando entra:
+        ${PAPEIS.map(([k,rot,txt])=>`<div style="margin-top:6px"><b>${rot}:</b> ${txt}</div>`).join("")}
+      </div>
+      ${ativos.map(ficha).join("")}
+      ${inativos.length?`<h4 style="font-size:12px;color:var(--muted);text-transform:uppercase;
+        letter-spacing:.5px;margin:22px 0 8px">Sem acesso ao sistema</h4>
+        ${inativos.map(ficha).join("")}
+        <div class="hint">Quem está aqui não consegue entrar, mas as aulas e os alunos dela continuam
+        guardados — é só devolver o acesso no ↺.</div>`:""}`;
+    d.querySelectorAll("[data-ed]").forEach(b=>b.onclick=()=>
+      modalPessoa(linhas.find(x=>x.professora===b.dataset.ed)));
+    d.querySelectorAll("[data-senha]").forEach(b=>b.onclick=()=>
+      modalSenha(linhas.find(x=>x.professora===b.dataset.senha)));
+    d.querySelectorAll("[data-ativo]").forEach(b=>b.onclick=async()=>{
+      const x=linhas.find(y=>y.professora===b.dataset.ativo),para=b.dataset.para==="1";
+      if(!para&&!confirm(`Tirar o acesso de ${x.nome}?\n\nEla não consegue mais entrar no sistema. `+
+                         `As aulas e os alunos dela continuam guardados e você pode devolver o acesso depois.`))return;
+      b.disabled=true;
+      try{ await chamarEquipe("ativar",{slug:x.professora,ativo:para});
+           await loadAll(); render(); toast(para?"Acesso devolvido.":"Acesso removido."); }
+      catch(e){ b.disabled=false; toast(limparErro(e)); }
+    });
+  }
+
+  /* ---- cadastrar / editar ---- */
+  function modalPessoa(x){
+    const novo=!x;
+    const usadas=new Set(SLUGS.map(s=>CORES[s].cor));
+    const livre=CORES_SUGERIDAS.find(c=>!usadas.has(c[0]))||CORES_SUGERIDAS[4];
+    const cor=x?(x.cor||CORES[x.professora].cor):livre[0];
+    const m=openModal(`<div class="modal">
+      <div class="modal-top">
+        <button class="ico-btn" data-x><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+        <h3>${novo?"Adicionar pessoa na equipe":"Editar "+esc(x.nome||"")}</h3>
+      </div>
+      <div class="modal-b">
+        <div class="fld"><label>Nome (é o que aparece na agenda)</label>
+          <input id="q_nome" value="${esc(x?x.nome||"":"")}" placeholder="Ex.: Nicolly"></div>
+
+        <div class="fld"><label>Função</label>
+          <select id="q_papel">${PAPEIS.map(([k,rot])=>
+            `<option value="${k}"${x&&x.papel===k?" selected":(!x&&k==="professora"?" selected":"")}>${rot}</option>`).join("")}</select>
+          <div class="hint" id="q_papel_txt" style="margin:6px 0 0"></div></div>
+
+        <div class="fld"><label>Cor da agenda dela</label>
+          <div class="segs" id="q_cores">${CORES_SUGERIDAS.map(([c1,c2])=>
+            `<button class="seg" data-cor="${c1}" data-soft="${c2}"
+              style="background:${c2};border-color:${c1===cor?c1:"transparent"};
+                     ${c1===cor?"box-shadow:0 0 0 2px "+c1+" inset;":""}width:42px;height:34px;padding:0">
+              <span style="display:block;width:14px;height:14px;border-radius:50%;background:${c1};margin:auto"></span>
+            </button>`).join("")}</div></div>
+
+        ${novo?`
+        <div class="fld"><label>E-mail de entrada</label>
+          <input id="q_email" type="email" autocapitalize="off" spellcheck="false"
+            placeholder="nome@studiolumarestivo.com.br"></div>
+        <div class="fld"><label>Senha provisória</label>
+          <div class="addal"><input id="q_senha" type="text" placeholder="mínimo 8 caracteres">
+            <button class="btn sm" data-sortear>Sortear</button></div>
+          <div class="hint" style="margin:6px 0 0">Passe essa senha para ela e peça que troque depois,
+            em Ajustes → Trocar a minha senha.</div></div>`
+        :`<div class="fld"><label>E-mail de entrada</label>
+            <input id="q_email" type="email" autocapitalize="off" spellcheck="false" value="${esc(x.email||"")}">
+            <div class="hint" style="margin:6px 0 0">Mudar aqui troca o e-mail que ela usa para entrar.</div></div>`}
+      </div>
+      <div class="modal-f">
+        <button class="btn" data-x>Cancelar</button>
+        <button class="btn pri" data-ok>${novo?"Criar acesso":"Salvar"}</button>
+      </div>
+    </div>`);
+    let corSel=cor,softSel=x?(x.cor_suave||CORES[x.professora].soft):livre[1];
+    const pintaPapel=()=>{
+      const k=m.querySelector("#q_papel").value;
+      m.querySelector("#q_papel_txt").textContent=(PAPEIS.find(p=>p[0]===k)||[,,""])[2];
+    };
+    m.querySelector("#q_papel").onchange=pintaPapel; pintaPapel();
+    m.querySelectorAll("[data-cor]").forEach(b=>b.onclick=()=>{
+      corSel=b.dataset.cor;softSel=b.dataset.soft;
+      m.querySelectorAll("[data-cor]").forEach(o=>{
+        const on=o.dataset.cor===corSel;
+        o.style.borderColor=on?corSel:"transparent";
+        o.style.boxShadow=on?`0 0 0 2px ${corSel} inset`:"none";
+      });
+    });
+    const bs=m.querySelector("[data-sortear]");
+    if(bs)bs.onclick=()=>{m.querySelector("#q_senha").value=senhaSorteada();};
+    m.querySelectorAll("[data-x]").forEach(b=>b.onclick=closeModal);
+    m.querySelector("[data-ok]").onclick=async()=>{
+      const nome =m.querySelector("#q_nome").value.trim();
+      const papel=m.querySelector("#q_papel").value;
+      const email=m.querySelector("#q_email").value.trim().toLowerCase();
+      if(!nome){toast("Digite o nome.");return;}
+      const btn=m.querySelector("[data-ok]");btn.disabled=true;
+      try{
+        if(novo){
+          const senha=m.querySelector("#q_senha").value;
+          if(!email.includes("@")){toast("Digite o e-mail de entrada.");btn.disabled=false;return;}
+          if(senha.length<8){toast("A senha precisa de pelo menos 8 caracteres.");btn.disabled=false;return;}
+          await chamarEquipe("criar",{nome,email,senha,papel,cor:corSel,cor_suave:softSel,
+                                      ordem:(SLUGS.length+1)});
+          closeModal();await loadAll();render();
+          setTimeout(()=>alert(`Pronto!\n\n${nome} entra com:\n\nE-mail: ${email}\nSenha: ${senha}\n\n`+
+            `Anote agora — depois só dá para trocar a senha, não para ver esta.`),150);
+        }else{
+          await chamarEquipe("atualizar",{slug:x.professora,nome,papel,cor:corSel,cor_suave:softSel});
+          if(email&&email!==(x.email||"").toLowerCase())
+            await chamarEquipe("email",{slug:x.professora,email});
+          closeModal();await loadAll();render();toast("Equipe atualizada.");
+        }
+      }catch(e){btn.disabled=false;toast(limparErro(e));}
+    };
+  }
+
+  /* ---- trocar a senha de alguém ---- */
+  function modalSenha(x){
+    const m=openModal(`<div class="modal" style="width:min(420px,100%)">
+      <div class="modal-top">
+        <button class="ico-btn" data-x><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+        <h3>Senha de ${esc(x.nome||"")}</h3>
+      </div>
+      <div class="modal-b">
+        <p style="font-size:13px;color:var(--muted);line-height:1.6;margin:0 0 14px">
+          Escolha uma senha nova e passe para ela. A senha antiga para de funcionar na hora.</p>
+        <div class="fld"><label>Senha nova</label>
+          <div class="addal"><input id="s_nova" type="text" placeholder="mínimo 8 caracteres">
+            <button class="btn sm" data-sortear>Sortear</button></div></div>
+      </div>
+      <div class="modal-f"><button class="btn" data-x>Cancelar</button>
+        <button class="btn pri" data-ok>Trocar a senha</button></div>
+    </div>`);
+    m.querySelector("[data-sortear]").onclick=()=>{m.querySelector("#s_nova").value=senhaSorteada();};
+    m.querySelectorAll("[data-x]").forEach(b=>b.onclick=closeModal);
+    m.querySelector("[data-ok]").onclick=async()=>{
+      const senha=m.querySelector("#s_nova").value;
+      if(senha.length<8){toast("A senha precisa de pelo menos 8 caracteres.");return;}
+      const btn=m.querySelector("[data-ok]");btn.disabled=true;
+      try{
+        await chamarEquipe("senha",{slug:x.professora,senha});
+        closeModal();
+        setTimeout(()=>alert(`Senha trocada.\n\n${x.nome} entra com:\n\nE-mail: ${x.email}\nSenha: ${senha}`),150);
+      }catch(e){btn.disabled=false;toast(limparErro(e));}
+    };
+  }
+};
+function senhaSorteada(){
+  const a="abcdefghijkmnpqrstuvwxyz",A="ABCDEFGHJKLMNPQRSTUVWXYZ",n="23456789";
+  const p=x=>x[Math.floor(Math.random()*x.length)];
+  return p(A)+p(a)+p(a)+p(a)+p(a)+p(n)+p(n)+"@"+p(A)+p(a);
+}
+
 VIEWS.ajustes=function(head,mod){
   const aba=S.abaAj||"geral";
   const itens=[["geral","Geral"],["importar","Importar alunos"],["lembretes","Lembretes"]];
@@ -3583,6 +3906,41 @@ VIEWS.ajustes=function(head,mod){
   head.querySelectorAll("[data-aba]").forEach(b=>b.onclick=()=>{S.abaAj=b.dataset.aba;render();});
 };
 
+/* qualquer pessoa troca a própria senha — isso o Supabase deixa fazer
+   com o token da própria sessão, sem passar pela gestora */
+function modalMinhaSenha(){
+  const m=openModal(`<div class="modal" style="width:min(420px,100%)">
+    <div class="modal-top">
+      <button class="ico-btn" data-x><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+      <h3>Trocar a minha senha</h3>
+    </div>
+    <div class="modal-b">
+      <div class="fld"><label>Senha nova</label>
+        <input id="ms_1" type="password" autocomplete="new-password" placeholder="mínimo 8 caracteres"></div>
+      <div class="fld"><label>Repita a senha nova</label>
+        <input id="ms_2" type="password" autocomplete="new-password"></div>
+      <div class="hint">Depois de trocar, use a senha nova no próximo login em qualquer aparelho.</div>
+    </div>
+    <div class="modal-f"><button class="btn" data-x>Cancelar</button>
+      <button class="btn pri" data-ok>Trocar</button></div>
+  </div>`);
+  m.querySelectorAll("[data-x]").forEach(b=>b.onclick=closeModal);
+  m.querySelector("[data-ok]").onclick=async()=>{
+    const a1=m.querySelector("#ms_1").value,a2=m.querySelector("#ms_2").value;
+    if(a1.length<8){toast("A senha precisa de pelo menos 8 caracteres.");return;}
+    if(a1!==a2){toast("As duas senhas não são iguais.");return;}
+    const btn=m.querySelector("[data-ok]");btn.disabled=true;
+    try{
+      const r=await fetch(AUTH+"user",{method:"PUT",
+        headers:{apikey:KEY,Authorization:"Bearer "+(SES?SES.access_token:""),"Content-Type":"application/json"},
+        body:JSON.stringify({password:a1})});
+      const j=await r.json().catch(()=>({}));
+      if(!r.ok) throw new Error(j.msg||j.message||"Não consegui trocar a senha.");
+      closeModal();toast("Senha trocada.");
+    }catch(e){btn.disabled=false;toast(limparErro(e));}
+  };
+}
+
 function painelGeral(d){
   const c=CORES[S.prof];
   d.innerHTML=`<div class="cards">
@@ -3590,10 +3948,12 @@ function painelGeral(d){
       <h5>Sua conta</h5>
       <p class="cap">${esc((SES&&SES.email)||"")}</p>
       <div style="font-size:13px;line-height:1.9">
-        <b>${c.nome}</b> · ${S.isLuma?"gestora (vê o Studio inteiro)":"professora (vê só a própria carteira)"}<br>
+        <b>${c.nome}</b> · ${rotuloPapel(S.papel)}<br>
+        <span style="color:var(--muted);font-size:12px">${esc((PAPEIS.find(x=>x[0]===S.papel)||[,,""])[2])}</span><br>
         Cor da sua agenda: <span style="display:inline-block;width:12px;height:12px;border-radius:3px;
           background:${c.cor};vertical-align:-1px"></span>
       </div>
+      <button class="btn sm" id="aj_senha" style="margin-top:12px">Trocar a minha senha</button>
     </div>
     <div class="card">
       <h5>Cópia de segurança</h5>
@@ -3606,6 +3966,7 @@ function painelGeral(d){
       <button class="btn sm" id="aj_reload">Atualizar dados</button>
     </div>
   </div>`;
+  d.querySelector("#aj_senha").onclick=modalMinhaSenha;
   d.querySelector("#aj_bkp").onclick=baixarBackup;
   d.querySelector("#aj_reload").onclick=async()=>{await loadAll();render();toast("Dados atualizados.");};
 }
@@ -3938,7 +4299,7 @@ VIEWS.reposicoes=function(head,mod){
         const p=s.proximo;
         const cor=!p?"var(--muted)":(p.diasRestantes<=3?"var(--critical)":p.diasRestantes<=7?"var(--warning)":"var(--good)");
         return `<tr>
-          <td class="tit"><b>${esc(al.nome)}</b>${al.professora&&S.isLuma?`<div style="font-size:10.5px;color:${CORES[al.professora].cor};font-weight:600">${CORES[al.professora].nome}</div>`:""}</td>
+          <td class="tit"><b>${esc(al.nome)}</b>${al.professora&&S.veTodas?`<div style="font-size:10.5px;color:${CORES[al.professora].cor};font-weight:600">${CORES[al.professora].nome}</div>`:""}</td>
           <td data-l="Saldo"><b style="color:${s.saldo>0?"var(--good)":"var(--muted)"};font-size:15px">${s.saldo}</b></td>
           <td data-l="Vence em"><div>${p?`<b style="color:${cor}">${p.vence.slice(8,10)}/${p.vence.slice(5,7)}</b>
                 <div style="font-size:10.5px;color:${cor}">${p.diasRestantes<=0?"vence hoje":"em "+p.diasRestantes+" dia(s)"}</div>`:"—"}</div></td>
