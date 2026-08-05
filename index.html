@@ -2,8 +2,13 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#1FA97A">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Studio Luma">
 <title>Agenda — Studio Luma Restivo</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231FA97A'/><text x='50' y='70' font-size='58' font-family='sans-serif' fill='white' text-anchor='middle'>L</text></svg>">
 <style>
@@ -137,9 +142,10 @@ input,select,textarea{font-family:inherit;font-size:14px;color:var(--text)}
 .cbox.on svg{opacity:1}
 
 /* ============ GRID SEMANA/DIA ============ */
-.grid-head{display:flex;border-bottom:1px solid var(--line);flex-shrink:0}
-.gutter-head{width:var(--gutter);flex-shrink:0;display:flex;align-items:flex-end;justify-content:flex-end;padding:0 8px 6px 0;font-size:10px;color:var(--muted)}
-.head-cols{flex:1;display:flex}
+.grid-head{display:flex;border-bottom:1px solid var(--line);flex-shrink:0;overflow:hidden}
+.gutter-head{width:var(--gutter);flex-shrink:0;display:flex;align-items:flex-end;justify-content:flex-end;
+  padding:0 8px 6px 0;font-size:10px;color:var(--muted);position:sticky;left:0;z-index:5;background:#fff}
+.head-cols{flex:1;display:flex;will-change:transform}
 .head-col{flex:1;text-align:center;padding:8px 0 6px;border-left:1px solid var(--line-soft);min-width:0}
 .head-col .dw{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
 .head-col .dn{font-size:24px;font-weight:400;line-height:1.3;width:40px;height:40px;margin:2px auto 0;border-radius:50%;display:flex;align-items:center;justify-content:center}
@@ -147,8 +153,8 @@ input,select,textarea{font-family:inherit;font-size:14px;color:var(--text)}
 .head-col.today .dn{background:var(--accent);color:#fff}
 .head-col .pf{font-size:11px;font-weight:500;padding:2px 8px;border-radius:10px;display:inline-block;margin-top:2px}
 
-.grid-body{flex:1;overflow-y:auto;overflow-x:hidden;display:flex;position:relative}
-.gutter{width:var(--gutter);flex-shrink:0;position:relative}
+.grid-body{flex:1;overflow-y:auto;overflow-x:hidden;display:flex;position:relative;-webkit-overflow-scrolling:touch}
+.gutter{width:var(--gutter);flex-shrink:0;position:sticky;left:0;z-index:4;background:#fff}
 .gutter .hr{height:var(--hour);position:relative}
 .gutter .hr span{position:absolute;right:8px;top:-7px;font-size:10px;color:var(--muted);background:#fff;padding:0 2px}
 .cols{flex:1;display:flex;position:relative}
@@ -165,7 +171,8 @@ input,select,textarea{font-family:inherit;font-size:14px;color:var(--text)}
 .ev:hover{box-shadow:var(--shadow-1);z-index:5}
 .ev b{display:block;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ev .t{opacity:.85;font-size:10.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ev .cap{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:600;margin-top:1px}
+.ev .cap{display:block;font-size:10px;font-weight:600;margin-top:1px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ev.full{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.45) 0 6px,transparent 6px 12px)}
 .ev.cancel{opacity:.5;text-decoration:line-through}
 .ev.short{padding-top:1px}
@@ -200,8 +207,8 @@ input,select,textarea{font-family:inherit;font-size:14px;color:var(--text)}
 .lday-d b{font-size:22px;font-weight:400;display:block}
 .lday-d span{font-size:11px;color:var(--muted);text-transform:uppercase}
 .lday-d.today b{color:var(--accent);font-weight:600}
-.lday-e{flex:1;display:flex;flex-direction:column;gap:6px}
-.lrow{display:flex;align-items:center;gap:10px;font-size:13px;padding:6px 8px;border-radius:6px;cursor:pointer}
+.lday-e{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.lrow{display:flex;align-items:center;gap:10px;font-size:13px;padding:6px 8px;border-radius:6px;cursor:pointer;min-width:0}
 .lrow:hover{background:var(--hover)}
 .lrow i{width:9px;height:9px;border-radius:50%;flex-shrink:0}
 .lrow .h{color:var(--muted);width:96px;flex-shrink:0}
@@ -220,6 +227,7 @@ input,select,textarea{font-family:inherit;font-size:14px;color:var(--text)}
 .fld input,.fld select,.fld textarea{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:#fff}
 .fld input:focus,.fld select:focus,.fld textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.row2.larga{grid-template-columns:1.4fr 1fr}
 .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
 .segs{display:flex;gap:8px;flex-wrap:wrap}
 .seg{padding:7px 14px;border:1px solid var(--line);border-radius:18px;font-size:13px;cursor:pointer;background:#fff}
@@ -267,6 +275,17 @@ input,select,textarea{font-family:inherit;font-size:14px;color:var(--text)}
 .mini-act:hover{background:var(--hover)}
 .addal{display:flex;gap:8px}
 .addal input{flex:1}
+.al .acs{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.al .tag{flex-shrink:0}
+details.novo{border:1px solid var(--line-soft);border-radius:12px;margin-bottom:16px}
+details.novo>summary{list-style:none;cursor:pointer;padding:12px 14px;font-size:13.5px;font-weight:500;
+  color:var(--prof);display:flex;align-items:center;gap:9px}
+details.novo>summary::-webkit-details-marker{display:none}
+details.novo>summary::before{content:"+";font-size:17px;font-weight:600;line-height:1;width:18px;text-align:center}
+details.novo[open]>summary{border-bottom:1px solid var(--line-soft)}
+details.novo[open]>summary::before{content:"–"}
+details.novo>summary:hover{background:var(--hover);border-radius:12px 12px 0 0}
+.novo-b{padding:14px 14px 12px}
 .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:#323232;color:#fff;font-size:13px;
   padding:12px 20px;border-radius:8px;box-shadow:var(--shadow-2);z-index:300;opacity:0;transition:opacity .2s,transform .2s}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(-4px)}
@@ -278,11 +297,16 @@ input,select,textarea{font-family:inherit;font-size:14px;color:var(--text)}
 /* ============ IMPORTAÇÃO ============ */
 .modal.wide{width:min(940px,100%)}
 .modal.inline{width:100%;max-width:none;max-height:none;overflow:visible;box-shadow:none;border-radius:0;background:transparent}
-.modal.inline>.modal-top{display:none}
-.modal.inline>.modal-b{padding:0}
-.modal.inline>.modal-f{padding:18px 0 0;justify-content:flex-start}
-.modal.inline>.modal-f [data-x]{display:none}
-.modal.inline>.modal-f:not(:has(button:not([data-x]))){display:none}
+/* o título e o X já são o cabeçalho do módulo — sobra só a barra de ações */
+.modal.inline .modal-top{position:static;background:transparent;border:0;padding:0 0 14px;
+  justify-content:flex-end;flex-wrap:wrap}
+.modal.inline .modal-top h3{display:none}
+.modal.inline .modal-top [data-x]{display:none}
+.modal.inline .modal-top:not(:has(button:not([data-x]))){display:none}
+.modal.inline .modal-b{padding:0}
+.modal.inline .modal-f{padding:18px 0 0;justify-content:flex-start}
+.modal.inline .modal-f [data-x]{display:none}
+.modal.inline .modal-f:not(:has(button:not([data-x]))){display:none}
 .modal.inline .det-bar{display:none}
 .drop{border:2px dashed var(--line);border-radius:12px;padding:34px 20px;text-align:center;cursor:pointer;transition:.15s}
 .drop:hover,.drop.over{border-color:var(--prof);background:var(--prof-soft)}
@@ -304,6 +328,7 @@ table.prev td{padding:7px 9px;border-bottom:1px solid var(--line-soft);vertical-
 table.prev tr.err{background:#fef4f3}
 table.prev tr.dup{background:#fffdf2}
 table.prev select{padding:4px 6px;border:1px solid var(--line);border-radius:6px;font-size:11.5px;background:#fff}
+table.prev input.num{width:96px;max-width:100%;padding:6px 8px;border:1px solid var(--line);border-radius:6px}
 .st{font-size:10px;font-weight:600;padding:2px 7px;border-radius:9px;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap}
 .st.nova{background:#e6f4ea;color:#137333}
 .st.dupl{background:#fef7e0;color:#b06000}
@@ -342,7 +367,7 @@ table.prev select{padding:4px 6px;border:1px solid var(--line);border-radius:6px
 .legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
 /* colunas empilhadas */
 .cols6{display:flex;align-items:flex-end;gap:10px;height:132px;padding-top:4px}
-.cols6 .c{flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;position:relative;height:100%}
+.cols6 .c{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;position:relative;height:100%}
 .cols6 .seg{border-radius:4px 4px 0 0}
 .cols6 .seg.b{border-radius:0}
 .cols6 .lb{font-size:10px;color:var(--muted-ink);text-align:center;padding-top:6px;
@@ -353,7 +378,7 @@ table.prev select{padding:4px 6px;border:1px solid var(--line);border-radius:6px
   opacity:0;transition:.14s;z-index:9;box-shadow:var(--shadow-1)}
 /* barras horizontais */
 .hbars{display:flex;flex-direction:column;gap:9px}
-.hbar{display:grid;grid-template-columns:74px 1fr auto;align-items:center;gap:10px;font-size:12px}
+.hbar{display:grid;grid-template-columns:minmax(0,74px) minmax(0,1fr) auto;align-items:center;gap:10px;font-size:12px}
 .hbar .nm{color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .hbar .tr{background:var(--line-soft);border-radius:4px;height:14px;overflow:hidden}
 .hbar .fl{height:100%;border-radius:0 4px 4px 0;min-width:3px}
@@ -366,41 +391,196 @@ table.prev select{padding:4px 6px;border:1px solid var(--line);border-radius:6px
 .lm b{font-weight:500}
 @media(max-width:900px){.cards{grid-template-columns:1fr}.hero .num{font-size:32px}}
 
-/* mobile */
+/* =====================================================================
+   MOBILE — o app é usado no celular dentro do studio, então aqui é
+   layout de verdade, não só fonte menor.
+   ===================================================================== */
 .menu-btn{display:none}
 .vs-ab{display:none}
+.rail-scrim{display:none}
+.fab{display:none}
+.ag-chips{display:none}
+.chip{display:inline-flex;align-items:center;gap:7px;padding:8px 13px;border-radius:20px;
+  border:1px solid var(--line);background:#fff;font-size:13px;white-space:nowrap;cursor:pointer;
+  flex-shrink:0;color:var(--text)}
+.chip i{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.chip.on{font-weight:600}
+.chip.off{opacity:.45}
+.chip.todas.on{background:var(--prof-soft);border-color:var(--prof);color:var(--prof)}
+
 @media(max-width:960px){
-  :root{--gutter:44px}
-  .rail{position:fixed;left:0;top:0;bottom:0;z-index:80;transform:translateX(-100%);
-    transition:transform .2s;box-shadow:var(--shadow-2);background:#fff}
+  :root{--gutter:46px}
+
+  /* ---- gaveta lateral ---- */
+  .rail{position:fixed;left:0;top:0;bottom:0;z-index:80;width:min(84vw,300px);
+    transform:translateX(-100%);transition:transform .22s ease;box-shadow:var(--shadow-2);background:#fff;
+    padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
   .rail.open{transform:none}
+  .rail-scrim{display:block;position:fixed;inset:0;z-index:79;background:rgba(32,33,36,.42);
+    opacity:0;pointer-events:none;transition:opacity .22s}
+  .rail-scrim.on{opacity:1;pointer-events:auto}
+  .rail-nav{padding:4px 10px 14px}
+  .nav-item{padding:12px;font-size:15px;gap:13px}
+  .nav-item svg{width:20px;height:20px}
+  .rail-user{padding:12px 12px calc(12px + env(safe-area-inset-bottom))}
+  .rail-user button{padding:10px}
   .menu-btn{display:flex}
-  .head{min-height:56px;padding:8px 12px;gap:6px}
-  .head h1{font-size:16px}
+
+  /* ---- cabeçalho do módulo ---- */
+  .head{min-height:54px;gap:6px;padding:calc(8px + env(safe-area-inset-top)) 12px 8px}
+  .head h1{font-size:17px}
   .head .sub{display:none}
-  .rolar{padding:14px}
+  .spacer{display:none}
+  .abas{width:100%;order:9;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .abas::-webkit-scrollbar{display:none}
+  .aba{white-space:nowrap;font-size:13px;padding:8px 13px}
+
+  /* ---- conteúdo ---- */
+  .rolar{padding:14px 12px calc(28px + env(safe-area-inset-bottom))}
   .cards{grid-template-columns:1fr}
-  .hero .num{font-size:32px}
+  .hero{padding:16px}
+  .hero .num{font-size:30px}
+  .kpis{grid-template-columns:repeat(2,1fr);gap:8px}
+  .kpi{padding:10px}
+  .kpi b{font-size:19px}
+  .lista-mini{max-height:none}
+  .lm{flex-wrap:wrap;row-gap:6px}
+  .lm .nm{flex:1 1 100%}
+
+  /* ---- formulários (16px evita o zoom automático do iPhone) ---- */
+  input,select,textarea,.fld input,.fld select,.fld textarea,.lock-card input{font-size:16px}
+  .row3{grid-template-columns:1fr 1fr}
+  .row3>*:last-child{grid-column:1/-1}
+  .btn{padding:10px 18px}
+  .btn.sm{padding:8px 13px;font-size:13px}
+  .mini-act{width:34px;height:34px}
+  .seg{padding:9px 15px}
+  .dows button{width:38px;height:38px}
+
+  /* ---- gráficos ---- */
+  .cols6{gap:5px;height:120px}
+  .cols6 .lb{font-size:9.5px}
+  .tip{display:none}          /* não existe "passar o mouse" no celular */
+  .hbar{grid-template-columns:minmax(0,62px) minmax(0,1fr) auto;gap:8px;font-size:11.5px}
+
+  /* ---- agenda ---- */
   .agenda{flex-direction:column}
   .ag-side{display:none}
-  .cal-title{font-size:14px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis}
-  .btn-hoje{padding:0 11px;font-size:12.5px;height:32px}
-  .ico-btn{width:32px;height:32px}
-  .view-switch{height:32px}
-  .view-switch button{padding:0 10px;font-size:12.5px}
+  .cal-title{flex:1;min-width:0;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    border:0;background:transparent;text-align:left;padding:0;font-weight:500;cursor:pointer}
+  .btn-hoje{padding:0 12px;font-size:13px;height:34px}
+  .ico-btn{width:34px;height:34px}
+  .view-switch{height:34px}
+  .view-switch button{padding:0 11px;font-size:13px;min-width:34px}
   .vs-full{display:none}
   .vs-ab{display:inline}
-  .spacer{display:none}
-  .abas{width:100%;overflow-x:auto}
-  .aba{white-space:nowrap;font-size:12.5px;padding:6px 11px}
-  .lday-d{width:56px}
-  .lrow .h{width:auto}
   .head-col .dn{font-size:19px;width:32px;height:32px}
-  .mrow{min-height:74px}
-  .mchip{font-size:9.5px;padding:1px 3px}
-  .kpis{grid-template-columns:repeat(2,1fr)}
-  table.prev{font-size:11px}
-  table.prev th,table.prev td{padding:6px 5px}
+  .head-col .dw{font-size:10px}
+
+  /* filtro de agendas — no desktop mora na coluna da esquerda, aqui vira chip */
+  .ag-chips{display:flex;gap:7px;padding:9px 12px;overflow-x:auto;-webkit-overflow-scrolling:touch;
+    border-bottom:1px solid var(--line-soft);flex-shrink:0;scrollbar-width:none}
+  .ag-chips::-webkit-scrollbar{display:none}
+  .ag-chips:empty{display:none}
+
+  /* criar aula: o botão da coluna some, entra o flutuante */
+  .fab{display:flex;position:absolute;right:16px;bottom:calc(18px + env(safe-area-inset-bottom));
+    width:56px;height:56px;border-radius:19px;border:0;background:var(--prof);color:#fff;
+    box-shadow:var(--shadow-2);align-items:center;justify-content:center;z-index:20;cursor:pointer}
+  .fab svg{width:26px;height:26px;stroke:#fff;stroke-width:2.4;fill:none;stroke-linecap:round}
+  .fab:active{filter:brightness(.94)}
+
+  /* semana: 7 colunas legíveis, rolando na horizontal com a régua de horas fixa */
+  .grade-semana .grid-body{overflow-x:auto}
+  .grade-semana .head-col,.grade-semana .col{min-width:96px}
+  .ev{font-size:11.5px;padding:3px 5px;touch-action:auto}
+  .ev b{font-size:11.5px}
+  .ev .t{font-size:10px}
+  .ev-resize{display:none}
+}
+
+@media(max-width:760px){
+  /* ---- mês vira bolinhas, como no celular do Google Agenda ---- */
+  .mrow{min-height:78px}
+  .mcell{padding:2px 3px 5px;text-align:center}
+  .mcell .num{font-size:12px;padding:3px 0 2px}
+  .mcell .num span{width:22px;height:22px}
+  .mchip{display:inline-block;width:9px;height:9px;padding:0;margin:2px;border-radius:50%;
+    background:transparent!important;overflow:visible;vertical-align:top}
+  .mchip .mt{display:none}
+  .mchip i{width:9px;height:9px;display:block}
+  .mmore{font-size:10px;padding:1px 0 0}
+
+  /* ---- lista ---- */
+  .listv{padding:4px 12px calc(60px + env(safe-area-inset-bottom))}
+  .lday{gap:10px;padding:12px 0}
+  .lday-d{width:54px}
+  .lday-d b{font-size:19px}
+  .lday-d span{font-size:9.5px;white-space:nowrap}
+  .lrow{flex-wrap:wrap;row-gap:3px;padding:8px}
+  .lrow .h{width:auto;font-size:12px;flex-shrink:0}
+  .lrow .n{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .lrow .pf{flex-shrink:0}
+  .lrow .o{flex:1 1 100%;min-width:0;margin-left:0;padding-left:19px;font-size:11.5px;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+  /* ---- tabelas viram fichas ---- */
+  .prev-wrap.solto{border:0;border-radius:0;overflow:visible;max-height:none}
+  table.prev.stack,table.prev.stack tbody,table.prev.stack tr,table.prev.stack td{display:block;width:auto}
+  table.prev.stack thead{display:none}
+  table.prev.stack tr{border:1px solid var(--line-soft);border-radius:12px;padding:12px 14px;
+    margin-bottom:10px;background:#fff}
+  table.prev.stack tr.err{background:#fef4f3;border-color:#f5c7c3}
+  table.prev.stack tr.dup{background:#fffdf2}
+  table.prev.stack td{border:0;padding:4px 0;font-size:13.5px;display:flex;gap:14px;
+    align-items:flex-start;justify-content:space-between;text-align:right}
+  table.prev.stack td::before{content:attr(data-l);color:var(--muted);font-size:11px;font-weight:500;
+    text-transform:uppercase;letter-spacing:.3px;flex-shrink:0;text-align:left;padding-top:2px}
+  table.prev.stack td:not([data-l])::before{content:none}
+  table.prev.stack td.tit{display:block;text-align:left;font-size:15px;padding:0 0 8px;
+    margin-bottom:6px;border-bottom:1px solid var(--line-soft)}
+  table.prev.stack td.acoes{justify-content:flex-start;flex-wrap:wrap;gap:8px;padding-top:12px}
+  table.prev.stack td.acoes .btn{flex:1;min-width:110px}
+  table.prev.stack td.acoes::before{content:none}
+  table.prev.stack td:empty{display:none}
+
+  /* ---- modal vira folha que sobe de baixo ---- */
+  .backdrop{padding:0;align-items:flex-end}
+  .modal{width:100%;max-width:none;border-radius:16px 16px 0 0;max-height:94vh}
+  .modal.wide{width:100%}
+  .modal-top{padding:12px 10px}
+  .modal-b{padding:16px 14px 18px}
+  .modal-f{padding:0 14px calc(16px + env(safe-area-inset-bottom));flex-wrap:wrap}
+  .modal-f .btn{flex:1;min-width:120px;padding:12px 16px}
+  .modal.inline{border-radius:0}
+  .modal.inline .modal-f{padding:18px 0 0}
+  .modal.inline .modal-f .btn{flex:0 1 auto}
+  .det-h{padding:14px 16px 10px}
+  .det-s{padding:0 16px 14px}
+  /* ficha do aluno: nome em cima, botões numa faixa só deles */
+  .al{padding:10px;flex-wrap:wrap;row-gap:9px}
+  .al .nm{flex:1 1 auto;min-width:0}
+  .al .nm b{white-space:normal;line-height:1.3}
+  .al .acs{gap:7px}
+  .al .acs .mini-act{width:38px;height:38px;border:1px solid var(--line);border-radius:11px;
+    background:#fff;font-size:16px}
+  /* com 3 botões ou mais a faixa desce para uma linha só dela */
+  .al .acs:has(>:nth-child(3)){flex:1 0 100%;justify-content:flex-end;flex-wrap:wrap}
+  .al .acs:has(>:nth-child(3)) .mini-act{width:40px;height:40px}
+  .addal{flex-wrap:wrap}
+  .addal input{flex:1 1 100%}
+  details.novo>summary{padding:14px}
+}
+
+@media(max-width:560px){
+  .row2,.row2.larga{grid-template-columns:1fr}
+  .kpis{gap:8px}
+  /* na tela estreita a data ganha o espaço que os botões cedem */
+  .head{gap:4px}
+  .btn-hoje{padding:0 10px;font-size:12.5px}
+  .view-switch button{min-width:30px;padding:0 8px;font-size:12.5px}
+  .head .ico-btn{width:31px;height:31px}
+  .cal-title{font-size:14.5px}
 }
 </style>
 </head>
@@ -424,6 +604,7 @@ table.prev select{padding:4px 6px;border:1px solid var(--line);border-radius:6px
 
 <!-- ================= APP ================= -->
 <div id="app" hidden>
+  <div class="rail-scrim" id="railScrim"></div>
   <nav class="rail" id="rail">
     <div class="rail-logo">
       <div class="rail-mark" id="railMark">L</div>
@@ -893,10 +1074,19 @@ function renderRail(){
          ${bad[i.id]?`<span class="bdg">${bad[i.id]}</span>`:""}</button>`).join("");
   }).join("");
   document.querySelectorAll("#railNav .nav-item").forEach(b=>b.onclick=()=>{
-    S.modulo=b.dataset.mod;document.getElementById("rail").classList.remove("open");render();
+    S.modulo=b.dataset.mod;abrirRail(false);render();
   });
 }
 function bindUI(){
+  /* girar o celular ou abrir no tablet muda o layout: redesenha ao cruzar a faixa */
+  let faixa=emMobile(),tRz=null;
+  window.addEventListener("resize",()=>{
+    clearTimeout(tRz);
+    tRz=setTimeout(()=>{
+      const nova=emMobile();
+      if(nova!==faixa){faixa=nova;if(!nova)abrirRail(false);if(!document.querySelector(".backdrop"))render();}
+    },180);
+  });
   document.addEventListener("keydown",e=>{
     if(document.querySelector(".backdrop"))return;
     if(e.target.matches("input,textarea,select"))return;
@@ -919,12 +1109,21 @@ function nav(dir){
   S.miniAnchor=new Date(S.anchor);
   render();
 }
-const btnMenu=()=>`<button class="ico-btn menu-btn" id="menuBtn">
+const btnMenu=()=>`<button class="ico-btn menu-btn" id="menuBtn" aria-label="Menu">
   <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>`;
+function abrirRail(on){
+  document.getElementById("rail").classList.toggle("open",on);
+  const s=document.getElementById("railScrim");
+  if(s)s.classList.toggle("on",on);
+}
 function ligarMenu(){
   const b=document.getElementById("menuBtn");
-  if(b)b.onclick=()=>document.getElementById("rail").classList.toggle("open");
+  if(b)b.onclick=()=>abrirRail(!document.getElementById("rail").classList.contains("open"));
+  const s=document.getElementById("railScrim");
+  if(s)s.onclick=()=>abrirRail(false);
 }
+const emCelular =()=>window.innerWidth<=760;
+const emMobile  =()=>window.innerWidth<=960;
 
 /* =====================================================================
    ROTEADOR DOS MÓDULOS
@@ -972,18 +1171,24 @@ VIEWS.agenda=function(head,mod){
       <div class="mini" id="mini"></div>
       <div id="calsBox"></div>
     </aside>
-    <div class="ag-main" id="agMain"></div>
+    <div class="ag-main" id="agMain">
+      <div class="ag-chips" id="agChips"></div>
+      <button class="fab" id="btnFab" aria-label="Criar aula">
+        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+    </div>
   </div>`;
 
   head.querySelector("#btnHoje").onclick=()=>{S.anchor=new Date();S.miniAnchor=new Date();render();};
   head.querySelector("#btnPrev").onclick=()=>nav(-1);
   head.querySelector("#btnNext").onclick=()=>nav(1);
+  head.querySelector("#calTitle").onclick=()=>{if(emMobile())modalMini();};
   head.querySelector("#viewSwitch").onclick=e=>{
     const b=e.target.closest("button");if(!b)return;S.view=b.dataset.v;render();};
   head.querySelectorAll("#viewSwitch button").forEach(b=>b.classList.toggle("on",b.dataset.v===S.view));
   mod.querySelector("#btnCriar").onclick=()=>modalAula(null,null);
+  mod.querySelector("#btnFab").onclick=()=>modalAula(null,null);
 
-  renderTitle();renderMini();renderCals();
+  renderTitle();renderMini();renderCals();renderChips();
 
   const c=document.getElementById("agMain");
   if(S.view==="mes")        c.appendChild(viewMes());
@@ -1005,27 +1210,67 @@ VIEWS.agenda=function(head,mod){
     if(body){
       body.scrollTop=Math.max(0,(7-JAN.ini)*hourPx()-10);
       cab.style.paddingRight=Math.max(0,body.offsetWidth-body.clientWidth)+"px";
+      /* no celular a semana rola de lado; o cabeçalho acompanha e a régua de horas fica parada */
+      const hc=cab.querySelector(".head-cols");
+      if(hc){
+        const sincronizar=()=>{hc.style.transform=`translateX(${-body.scrollLeft}px)`;};
+        body.addEventListener("scroll",sincronizar,{passive:true});
+        if(S.view==="semana"&&body.scrollWidth>body.clientWidth+2){
+          const hoje=[...c.querySelectorAll(".head-col")].findIndex(el=>el.classList.contains("today"));
+          const col=c.querySelector(".col");
+          const larg=col?col.getBoundingClientRect().width:96;
+          body.scrollLeft=hoje>0?Math.min(body.scrollWidth-body.clientWidth,Math.round((hoje-1)*larg)):0;
+        }
+        sincronizar();
+      }
     }
   }
 };
+
+/* calendarinho do celular: o mês inteiro numa folha, já que a coluna some */
+function modalMini(){
+  const m=openModal(`<div class="modal" style="width:min(360px,100%)">
+    <div class="modal-top">
+      <button class="ico-btn" data-x><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+      <h3>Ir para uma data</h3>
+    </div>
+    <div class="modal-b"><div class="mini" id="miniSheet" style="margin:0"></div>
+      <button class="btn pri" style="width:100%;margin-top:6px" data-hoje>Voltar para hoje</button></div>
+  </div>`);
+  renderMini(m.querySelector("#miniSheet"),true);
+  m.querySelectorAll("[data-x]").forEach(b=>b.onclick=closeModal);
+  m.querySelector("[data-hoje]").onclick=()=>{S.anchor=new Date();S.miniAnchor=new Date();closeModal();render();};
+}
 
 function hourPx(){return parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hour"));}
 
 function renderTitle(){
   const a=S.anchor;let t="";
-  if(S.view==="dia") t=`${a.getDate()} de ${MES[a.getMonth()]} de ${a.getFullYear()}`;
-  else if(S.view==="mes") t=`${MES[a.getMonth()][0].toUpperCase()+MES[a.getMonth()].slice(1)} de ${a.getFullYear()}`;
-  else{
+  const curto=emMobile();
+  if(S.view==="dia")
+    t=curto?`${a.getDate()} de ${MES[a.getMonth()].slice(0,3)}`
+           :`${a.getDate()} de ${MES[a.getMonth()]} de ${a.getFullYear()}`;
+  else if(S.view==="mes"){
+    const nm=MES[a.getMonth()][0].toUpperCase()+MES[a.getMonth()].slice(1);
+    t=curto?`${nm.slice(0,3)} ${a.getFullYear()}`:`${nm} de ${a.getFullYear()}`;
+  }else{
     const s=startWeek(a),e=addDays(s,6);
-    t = s.getMonth()===e.getMonth()
-      ? `${s.getDate()} – ${e.getDate()} de ${MES[s.getMonth()]} de ${s.getFullYear()}`
-      : `${s.getDate()} de ${MES[s.getMonth()].slice(0,3)} – ${e.getDate()} de ${MES[e.getMonth()].slice(0,3)} de ${e.getFullYear()}`;
+    t = curto
+      ? (s.getMonth()===e.getMonth()
+          ? `${s.getDate()}–${e.getDate()} ${MES[s.getMonth()].slice(0,3)}`
+          : `${s.getDate()} ${MES[s.getMonth()].slice(0,3)} – ${e.getDate()} ${MES[e.getMonth()].slice(0,3)}`)
+      : (s.getMonth()===e.getMonth()
+          ? `${s.getDate()} – ${e.getDate()} de ${MES[s.getMonth()]} de ${s.getFullYear()}`
+          : `${s.getDate()} de ${MES[s.getMonth()].slice(0,3)} – ${e.getDate()} de ${MES[e.getMonth()].slice(0,3)} de ${e.getFullYear()}`);
   }
-  document.getElementById("calTitle").textContent=t;
+  const el=document.getElementById("calTitle");
+  el.textContent=t;
+  el.title=curto?"Toque para escolher a data":"";
 }
 
-function renderMini(){
-  const box=document.getElementById("mini");
+function renderMini(box,fechaAoEscolher){
+  box=box||document.getElementById("mini");
+  if(!box)return;
   const a=S.miniAnchor,y=a.getFullYear(),m=a.getMonth();
   const first=new Date(y,m,1),start=startWeek(first);
   let h=`<div class="mini-head"><b>${MES[m][0].toUpperCase()+MES[m].slice(1)} ${y}</b>
@@ -1039,11 +1284,13 @@ function renderMini(){
   }
   box.innerHTML=h+"</div>";
   box.querySelectorAll("[data-mn]").forEach(b=>b.onclick=()=>{
-    const d=new Date(S.miniAnchor);d.setDate(1);d.setMonth(d.getMonth()+ +b.dataset.mn);S.miniAnchor=d;renderMini();
+    const d=new Date(S.miniAnchor);d.setDate(1);d.setMonth(d.getMonth()+ +b.dataset.mn);S.miniAnchor=d;
+    renderMini(box,fechaAoEscolher);
   });
   box.querySelectorAll("[data-d]").forEach(b=>b.onclick=()=>{
     S.anchor=parseISO(b.dataset.d);
     if(S.view==="mes")S.view="semana";
+    if(fechaAoEscolher)closeModal();
     render();
   });
 }
@@ -1076,11 +1323,37 @@ function renderCals(){
   });
 }
 
+/* No celular a coluna da esquerda não cabe, então o filtro de agendas vira
+   uma fila de chips: tocar em uma professora deixa só ela na tela. */
+function renderChips(){
+  const box=document.getElementById("agChips");
+  if(!box)return;
+  if(!S.isLuma){box.innerHTML="";return;}
+  const todas=S.visible.size===SLUGS.length;
+  let h=`<button class="chip todas ${todas?"on":"off"}" data-todas>Todas</button>`;
+  SLUGS.forEach(s=>{
+    const c=CORES[s],on=S.visible.has(s),so=on&&S.visible.size===1;
+    h+=`<button class="chip ${on?"on":"off"}" data-chip="${s}"
+      style="${so?`border-color:${c.cor};background:${c.soft};color:${shade(c.cor,-45)}`:""}">
+      <i style="background:${c.cor}"></i>${c.nome}
+      <span style="font-size:11px;opacity:.7">${S.aulas.filter(a=>a.professora===s).length}</span></button>`;
+  });
+  box.innerHTML=h;
+  box.querySelector("[data-todas]").onclick=()=>{S.visible=new Set(SLUGS);render();};
+  box.querySelectorAll("[data-chip]").forEach(b=>b.onclick=()=>{
+    const s=b.dataset.chip;
+    /* já estava sozinha? volta para todas. senão, deixa só ela. */
+    S.visible = (S.visible.size===1&&S.visible.has(s)) ? new Set(SLUGS) : new Set([s]);
+    render();
+  });
+}
+
 /* =====================================================================
    VIEW: GRADE (dia / semana)
    ===================================================================== */
 function viewGrade(isDia){
   const wrap=document.createElement("div");
+  wrap.className=isDia?"grade grade-dia":"grade grade-semana";
   wrap.style.cssText="flex:1;display:flex;flex-direction:column;overflow:hidden";
   const dias = isDia ? [new Date(S.anchor)] : Array.from({length:7},(_,i)=>addDays(startWeek(S.anchor),i));
 
@@ -1184,7 +1457,7 @@ function evEl(o,date){
   const capIco=`<span class="cap" style="color:${cheia?"#c5221f":shade(c.cor,-30)}">${oc}/${a.capacidade}${cheia?" · lotada":""}</span>`;
   el.innerHTML = dur<=30
     ? `<b>${fmtH(a.hora_inicio)} ${esc(a.titulo)}</b><span class="t">${oc}/${a.capacidade}</span>`
-    : `<b>${esc(a.titulo)}</b><div class="t">${hm(a.hora_inicio)}–${hm(a.hora_fim)}${S.isLuma&&S.visible.size>1?" · "+c.nome:""}</div>${dur>=45?capIco:""}`;
+    : `<b>${esc(a.titulo)}</b><div class="t">${hm(a.hora_inicio)}–${hm(a.hora_fim)}${S.isLuma&&S.visible.size>1&&!emMobile()?" · "+c.nome:""}</div>${dur>=45?capIco:""}`;
   if(!o.cancel) el.insertAdjacentHTML("beforeend",'<div class="ev-resize"></div>');
   el.onclick=ev=>{ev.stopPropagation();if(!el.dataset.moved)modalDetalhe(a.id,o.data);};
   return el;
@@ -1196,6 +1469,9 @@ function evEl(o,date){
 function enableDrag(wrap,colDefs){
   let drag=null;
   wrap.addEventListener("pointerdown",e=>{
+    /* no celular arrastar com o dedo só atrapalha (e trocaria o horário sem querer):
+       lá a aula se edita abrindo a aula. Aqui a rolagem manda. */
+    if(e.pointerType==="touch"&&emMobile())return;
     const ev=e.target.closest(".ev");if(!ev||ev.classList.contains("cancel"))return;
     const resize=!!e.target.closest(".ev-resize");
     const aula=S.aulas.find(a=>a.id===ev.dataset.aula);if(!aula)return;
@@ -1268,13 +1544,15 @@ function viewMes(){
     h+=`<div class="mrow">`;
     for(let i=0;i<7;i++){
       const d=addDays(start,w*7+i),occ=ocorrenciasDoDia(d);
-      const shown=occ.slice(0,3);
+      /* no celular a aula vira bolinha, então cabem mais por dia */
+      const teto=emCelular()?6:3;
+      const shown=occ.slice(0,teto);
       h+=`<div class="mcell ${d.getMonth()!==a.getMonth()?"out":""} ${isToday(d)?"today":""}" data-d="${iso(d)}">
         <div class="num"><span>${d.getDate()}</span></div>
         ${shown.map(o=>{const c=CORES[o.aula.professora];
           return `<div class="mchip" data-a="${o.aula.id}" data-dd="${o.data}" style="background:${c.soft};color:${shade(c.cor,-45)};${o.cancel?"opacity:.5;text-decoration:line-through":""}">
-            <i style="background:${c.cor}"></i>${hm(o.aula.hora_inicio)} ${esc(o.aula.titulo)} · ${ocupacao(o.aula.id,o.data)}/${o.aula.capacidade}</div>`;}).join("")}
-        ${occ.length>3?`<div class="mmore" data-more="${iso(d)}">mais ${occ.length-3}</div>`:""}
+            <i style="background:${c.cor}"></i><span class="mt">${hm(o.aula.hora_inicio)} ${esc(o.aula.titulo)} · ${ocupacao(o.aula.id,o.data)}/${o.aula.capacidade}</span></div>`;}).join("")}
+        ${occ.length>teto?`<div class="mmore" data-more="${iso(d)}">mais ${occ.length-teto}</div>`:""}
       </div>`;
     }
     h+=`</div>`;
@@ -1305,7 +1583,7 @@ function viewLista(){
         <i style="background:${c.cor}"></i>
         <span class="h">${hm(o.aula.hora_inicio)} – ${hm(o.aula.hora_fim)}</span>
         <span class="n">${esc(o.aula.titulo)}</span>
-        <span style="color:${c.cor};font-size:11px;font-weight:600">${c.nome}</span>
+        <span class="pf" style="color:${c.cor};font-size:11px;font-weight:600">${c.nome}</span>
         <span class="o">${nomes?esc(nomes)+" · ":""}${oc}/${o.aula.capacidade}</span></div>`;
     });
     h+=`</div></div>`;
@@ -1565,6 +1843,7 @@ function modalDetalhe(aulaId,d){
           ${pr&&pr.status==="falta"?'<span class="tag falta">falta</span>'
              :pr&&pr.status==="desmarcada"?`<span class="tag repos" title="Crédito válido até ${pr.credito_ate||"—"}">desmarcou${pr.credito_ate?" · vale até "+pr.credito_ate.slice(8,10)+"/"+pr.credito_ate.slice(5,7):""}</span>`
              :pr&&pr.status==="presente"?'<span class="tag presente">presente</span>':`<span class="tag ${mt.tipo}">${mt.tipo==="reposicao"?"reposição":(mt.tipo==="fixa"?gen(al,"fixa","fixo"):mt.tipo)}</span>`}
+          <span class="acs">
           <button class="mini-act" data-zap="${al.id}" title="Lembrar no WhatsApp"
             ${telWhats(al.telefone)?"":"disabled style='opacity:.3'"}>💬</button>
           <button class="mini-act ${pr&&pr.status==="presente"?"on-ok":""}" data-pres="${mt.aluna_id}"
@@ -1574,6 +1853,7 @@ function modalDetalhe(aulaId,d){
           <button class="mini-act ${pr&&pr.status==="falta"?"on-bad":""}" data-pres="${mt.aluna_id}"
             data-st="falta" title="Faltou sem avisar — sem reposição">✕</button>
           <button class="mini-act" data-rm="${mt.id}" title="Remover da aula">✕</button>
+          </span>
         </div>`;}).join(""):'<div style="font-size:13px;color:var(--muted);padding:6px 2px">Nenhuma aluna nesta aula ainda.</div>'}</div>
 
       <h4>Adicionar na aula</h4>
@@ -1841,17 +2121,22 @@ function modalAlunas(alvo){
       <span class="nm"><b>${esc(al.nome)}</b><span>${esc(det)}</span></span>
       ${al.plano_fim?`<span class="tag" style="background:${cor}1a;color:${cor}">${sp.texto}</span>`:""}
       ${c?`<span class="tag" style="background:${c.soft};color:${shade(c.cor,-40)}">${c.nome}</span>`:""}
-      <button class="mini-act" data-ed="${al.id}" title="Editar">✎</button>
-      <button class="mini-act" data-del="${al.id}" title="Remover">✕</button>
+      <span class="acs">
+        <button class="mini-act" data-ed="${al.id}" title="Editar">✎</button>
+        <button class="mini-act" data-del="${al.id}" title="Remover">✕</button>
+      </span>
     </div>`;}).join("");
   const m=painel(alvo,`<div class="modal">
     <div class="modal-top">
       <button class="ico-btn" data-x><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
       <h3>Alunos do Studio (${S.alunas.length})</h3>
-      <button class="btn sm" data-imp>⬆ Importar planilha</button>
+      ${alvo?"":'<button class="btn sm" data-imp>⬆ Importar planilha</button>'}
     </div>
     <div class="modal-b">
-      <div class="row2" style="grid-template-columns:1.4fr 1fr">
+      <details class="novo"${emCelular()?"":" open"}>
+      <summary>Cadastrar novo aluno</summary>
+      <div class="novo-b">
+      <div class="row2 larga">
         <div class="fld"><label>Nome</label><input id="n_nome" placeholder="Nome completo"></div>
         <div class="fld"><label>WhatsApp</label><input id="n_tel" placeholder="(11) 90000-0000"></div>
       </div>
@@ -1866,7 +2151,8 @@ function modalAlunas(alvo){
         <option value="">Sem dona (aluna do Studio)</option>
         ${SLUGS.filter(s=>S.isLuma||s===S.prof).map(s=>`<option value="${s}"${s===S.prof?" selected":""}>${CORES[s].nome}</option>`).join("")}
       </select></div>
-      <button class="btn pri sm" data-new style="margin-bottom:16px">Cadastrar</button>
+      <button class="btn pri sm" data-new style="margin-bottom:4px">Cadastrar</button>
+      </div></details>
       <input id="busca" placeholder="Buscar por nome..." style="width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:8px;margin-bottom:12px">
       <div id="lista">${linhas||'<div style="font-size:13px;color:var(--muted)">Nenhuma aluna cadastrada.</div>'}</div>
     </div>
@@ -1879,7 +2165,8 @@ function modalAlunas(alvo){
       el.style.display=el.textContent.toLowerCase().includes(q)?"":"none";
     });
   };
-  m.querySelector("[data-imp]").onclick=()=>{if(alvo){S.modulo="ajustes";S.abaAj="importar";render();}else{closeModal();modalImportar();}};
+  const bImp=m.querySelector("[data-imp]");
+  if(bImp)bImp.onclick=()=>{if(alvo){S.modulo="ajustes";S.abaAj="importar";render();}else{closeModal();modalImportar();}};
   ligarCamposPlano(m,"n");
   const numOuNull=v=>{const n=parseFloat(String(v).replace(",","."));return isFinite(n)?n:null;};
   m.querySelector("[data-new]").onclick=async()=>{
@@ -1921,7 +2208,7 @@ function modalEditarAluna(id,volta){
       <h3>Editar cadastro</h3>
     </div>
     <div class="modal-b">
-      <div class="row2" style="grid-template-columns:1.4fr 1fr">
+      <div class="row2 larga">
         <div class="fld"><label>Nome</label><input id="e_nome" value="${esc(al.nome)}"></div>
         <div class="fld"><label>WhatsApp</label><input id="e_tel" value="${esc(al.telefone||"")}"></div>
       </div>
@@ -2801,7 +3088,7 @@ function modalRecebimentos(alvo){
         ${semCob?`<div class="aviso"><b>${semCob} aluno(s) ainda sem cobrança lançada neste mês.</b>
           Gerar cria uma linha para cada uma, com o valor e o vencimento do cadastro.
           <div style="margin-top:8px"><button class="btn sm pri" data-gerar>Gerar cobranças de ${nomeMes(ref).split(" de ")[0].toLowerCase()}</button></div></div>`:""}
-        ${L.length?`<div class="prev-wrap"><table class="prev">
+        ${L.length?`<div class="prev-wrap solto"><table class="prev stack">
           <thead><tr><th>Aluno</th><th>Plano</th><th>Valor</th><th>Vence</th><th>Situação</th>
             <th style="width:190px"></th></tr></thead>
           <tbody>${L.map((x,i)=>{
@@ -2812,13 +3099,13 @@ function modalRecebimentos(alvo){
                      :x.atrasado?'<span class="st erro">atrasado</span>'
                      :x.p?'<span class="st dupl">em aberto</span>':'<span style="color:var(--muted);font-size:11px">sem cobrança</span>';
             return `<tr class="${x.atrasado?"err":""}">
-              <td><b>${esc(x.al.nome)}</b>${c?`<div style="font-size:10px;color:${c.cor};font-weight:600">${c.nome}</div>`:""}</td>
-              <td>${esc(rotuloPlano(x.al.plano)||"—")}</td>
-              <td><b>${fmtBRL(x.valor)}</b>${tx>0?`<div style="font-size:10px;color:var(--muted)">
-                líquido ${fmtBRL(liq)} · taxa ${fmtBRL(tx)}</div>`:""}</td>
-              <td>${x.venc?x.venc.slice(8,10)+"/"+x.venc.slice(5,7):"—"}</td>
-              <td>${sit}</td>
-              <td style="white-space:nowrap">
+              <td class="tit"><b>${esc(x.al.nome)}</b>${c?`<div style="font-size:10px;color:${c.cor};font-weight:600">${c.nome}</div>`:""}</td>
+              <td data-l="Plano">${esc(rotuloPlano(x.al.plano)||"—")}</td>
+              <td data-l="Valor"><div><b>${fmtBRL(x.valor)}</b>${tx>0?`<div style="font-size:10px;color:var(--muted)">
+                líquido ${fmtBRL(liq)} · taxa ${fmtBRL(tx)}</div>`:""}</div></td>
+              <td data-l="Vence">${x.venc?x.venc.slice(8,10)+"/"+x.venc.slice(5,7):"—"}</td>
+              <td data-l="Situação">${sit}</td>
+              <td class="acoes" style="white-space:nowrap">
                 ${x.p?(x.pago?`<button class="mini-act" data-desfaz="${x.p.id}" title="Desfazer baixa">↺</button>`
                              :`<button class="btn sm pri" data-pago="${x.p.id}">Recebi</button>
                                <button class="btn sm" data-cob="${x.al.id}" ${telWhats(x.al.telefone)?"":"disabled"}>Cobrar</button>`)
@@ -2984,7 +3271,7 @@ function modalFinanceiro(alvo){
         <button class="ico-btn" data-x><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
         <h3>Painel financeiro</h3>
         ${S.isLuma?'<button class="btn sm" data-precos>Tabela de preços</button>':""}
-        <button class="btn sm" data-rec>Recebimentos</button>
+        ${alvo?"":'<button class="btn sm" data-rec>Recebimentos</button>'}
       </div>
       <div class="modal-b">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
@@ -3082,7 +3369,8 @@ function modalFinanceiro(alvo){
     box.querySelectorAll("[data-x]").forEach(b=>b.onclick=fechar(alvo));
     box.querySelectorAll("[data-nav]").forEach(b=>b.onclick=()=>{
       ref=new Date(ref.getFullYear(),ref.getMonth()+ +b.dataset.nav,1);desenhar();});
-    box.querySelector("[data-rec]").onclick=()=>{S.abaFin="recebimentos";alvo?render():(closeModal(),modalRecebimentos());};
+    const br=box.querySelector("[data-rec]");
+    if(br)br.onclick=()=>{S.abaFin="recebimentos";alvo?render():(closeModal(),modalRecebimentos());};
     const tp=box.querySelector("[data-precos]");
     if(tp)tp.onclick=()=>modalPrecos(()=>{alvo?render():(closeModal(),modalFinanceiro());});
     box.querySelectorAll("[data-renov]").forEach(b=>b.onclick=()=>{
@@ -3115,28 +3403,27 @@ function modalPrecos(aoFechar,alvo){
       <p style="font-size:13px;color:var(--muted);margin:0 0 14px;line-height:1.6">
         Valor <b>por mês</b> em cada plano. Ao cadastrar a aluna, o sistema preenche
         o valor sozinho a partir daqui — e você ainda pode mudar caso a caso.</p>
-      <div class="prev-wrap" style="max-height:none"><table class="prev">
+      <div class="prev-wrap solto" style="max-height:none"><table class="prev stack">
         <thead><tr><th>Plano</th><th>1x por semana</th><th>2x por semana</th><th>Parcelas</th></tr></thead>
         <tbody>${DURACOES.map(([k,rot,meses])=>`<tr>
-          <td><b>${rot}</b></td>
-          <td><input id="p_${k}_1x" type="number" step="1" min="0" style="width:96px;padding:6px 8px;border:1px solid var(--line);border-radius:6px"
+          <td class="tit"><b>${rot}</b></td>
+          <td data-l="1x por semana"><input class="num" id="p_${k}_1x" type="number" step="1" min="0"
                 value="${(t[k]&&t[k]["1x"])??""}"></td>
-          <td><input id="p_${k}_2x" type="number" step="1" min="0" style="width:96px;padding:6px 8px;border:1px solid var(--line);border-radius:6px"
+          <td data-l="2x por semana"><input class="num" id="p_${k}_2x" type="number" step="1" min="0"
                 value="${(t[k]&&t[k]["2x"])??""}"></td>
-          <td style="color:var(--muted)">${meses}x</td></tr>`).join("")}</tbody>
+          <td data-l="Parcelas" style="color:var(--muted)">${meses}x</td></tr>`).join("")}</tbody>
       </table></div>
       <h4 style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin:20px 0 8px">
         Taxa de cada forma de pagamento</h4>
       <p style="font-size:12.5px;color:var(--muted);margin:0 0 10px;line-height:1.6">
         Quanto a maquininha/parceiro fica de cada recebimento. O sistema já sugere o valor líquido
         na hora de dar baixa — e você pode corrigir caso a caso.</p>
-      <div class="prev-wrap" style="max-height:none"><table class="prev">
+      <div class="prev-wrap solto" style="max-height:none"><table class="prev stack">
         <thead><tr><th>Forma</th><th>Taxa (%)</th><th>Exemplo: R$ 210,00 vira</th></tr></thead>
         <tbody>${FORMAS.map(([k,rot])=>`<tr>
-          <td>${rot}</td>
-          <td><input id="tx_${k}" type="number" step="0.01" min="0" max="100" value="${taxaDe(k)}"
-                style="width:88px;padding:6px 8px;border:1px solid var(--line);border-radius:6px"></td>
-          <td id="ex_${k}" style="color:var(--muted)">${fmtBRL(liquidoDe(210,k))}</td></tr>`).join("")}</tbody>
+          <td class="tit">${rot}</td>
+          <td data-l="Taxa (%)"><input class="num" id="tx_${k}" type="number" step="0.01" min="0" max="100" value="${taxaDe(k)}"></td>
+          <td data-l="R$ 210,00 vira" id="ex_${k}" style="color:var(--muted)">${fmtBRL(liquidoDe(210,k))}</td></tr>`).join("")}</tbody>
       </table></div>
       <div class="fld" style="margin-top:16px"><label>Avisar da renovação com quantos dias de antecedência</label>
         <input id="p_dias" type="number" min="1" max="120" value="${esc(S.cfg.dias_aviso_renovacao||"30")}" style="width:120px"></div>
@@ -3254,7 +3541,7 @@ VIEWS.inicio=function(head,mod){
 
 /* ---------- ALUNOS ---------- */
 VIEWS.alunos=function(head,mod){
-  head.innerHTML=btnMenu()+`<div><h1>Alunos</h1>
+  head.innerHTML=btnMenu()+`<div><h1>Alunos <span style="color:var(--muted);font-weight:400">${minhasAlunas().length}</span></h1>
     <div class="sub">${S.isLuma?"Todos os alunos do Studio":"Somente a sua carteira"}</div></div>
     <div class="spacer"></div>
     <button class="btn sm" data-ir="ajustes">Importar planilha</button>`;
@@ -3499,21 +3786,21 @@ VIEWS.contas=function(head,mod){
       <div class="aviso">Wellhub e TotalPass entram com <b>um mês de atraso</b>: os check-ins de
         ${nomeMes(ref.getMonth()?new Date(ref.getFullYear(),ref.getMonth()-1,1):new Date(ref.getFullYear()-1,11,1)).split(" de ")[0].toLowerCase()}
         são pagos em ${nomeMes(ref).split(" de ")[0].toLowerCase()}.</div>
-      <div class="prev-wrap" style="max-height:none"><table class="prev">
+      <div class="prev-wrap solto" style="max-height:none"><table class="prev stack">
         <thead><tr><th>Professora</th><th>Fixo</th><th>Comissão</th><th>Wellhub/TotalPass</th>
           <th>Total</th><th>Situação</th><th style="width:150px"></th></tr></thead>
         <tbody>${linhas.map(({sl,c,pg})=>{
           const cor=CORES[sl];
           return `<tr>
-            <td><b style="color:${cor.cor}">${cor.nome}</b>
+            <td class="tit"><b style="color:${cor.cor}">${cor.nome}</b>
               <div style="font-size:10.5px;color:var(--muted)">${c.qtdDiretos} aluno(s) · ${c.pct}% de comissão</div></td>
-            <td>${fmtBRL(c.fixo)}</td>
-            <td>${fmtBRL(c.comis)}</td>
-            <td>${fmtBRL(c.parc)}<div style="font-size:10.5px;color:var(--muted)">${c.qtdParc} aluno(s)</div></td>
-            <td><b>${fmtBRL(c.total)}</b></td>
-            <td>${pg&&pg.pago_em?`<span class="st nova">pago ${pg.pago_em.slice(8,10)}/${pg.pago_em.slice(5,7)}</span>`
+            <td data-l="Fixo">${fmtBRL(c.fixo)}</td>
+            <td data-l="Comissão">${fmtBRL(c.comis)}</td>
+            <td data-l="Wellhub/TotalPass"><div>${fmtBRL(c.parc)}<div style="font-size:10.5px;color:var(--muted)">${c.qtdParc} aluno(s)</div></div></td>
+            <td data-l="Total"><b>${fmtBRL(c.total)}</b></td>
+            <td data-l="Situação">${pg&&pg.pago_em?`<span class="st nova">pago ${pg.pago_em.slice(8,10)}/${pg.pago_em.slice(5,7)}</span>`
                                  :'<span class="st dupl">a pagar</span>'}</td>
-            <td>${pg&&pg.pago_em?`<button class="mini-act" data-desf="${pg.id}" title="Desfazer">↺</button>`
+            <td class="acoes">${pg&&pg.pago_em?`<button class="mini-act" data-desf="${pg.id}" title="Desfazer">↺</button>`
                                  :`<button class="btn sm pri" data-pagar="${sl}" ${c.total>0?"":"disabled"}>Paguei</button>`}
                 <button class="btn sm" data-det="${sl}">Detalhe</button></td>
           </tr>`;}).join("")}</tbody>
@@ -3645,24 +3932,24 @@ VIEWS.reposicoes=function(head,mod){
     <div class="aviso">Quem desmarca com <b>${R.horas}h</b> ou mais de antecedência ganha o direito.
       São até <b>${R.porMes} por mês</b> e cada crédito vale <b>${R.validade} dias</b> a partir da aula desmarcada —
       por isso quem desmarca no fim do mês ainda consegue repor no mês seguinte.</div>
-    ${linhas.length?`<div class="prev-wrap" style="max-height:none"><table class="prev">
+    ${linhas.length?`<div class="prev-wrap solto" style="max-height:none"><table class="prev stack">
       <thead><tr><th>Aluno</th><th>Saldo</th><th>Vence em</th><th>Créditos</th><th style="width:200px"></th></tr></thead>
       <tbody>${linhas.map(({al,cr,s})=>{
         const p=s.proximo;
         const cor=!p?"var(--muted)":(p.diasRestantes<=3?"var(--critical)":p.diasRestantes<=7?"var(--warning)":"var(--good)");
         return `<tr>
-          <td><b>${esc(al.nome)}</b>${al.professora&&S.isLuma?`<div style="font-size:10.5px;color:${CORES[al.professora].cor};font-weight:600">${CORES[al.professora].nome}</div>`:""}</td>
-          <td><b style="color:${s.saldo>0?"var(--good)":"var(--muted)"};font-size:15px">${s.saldo}</b></td>
-          <td>${p?`<b style="color:${cor}">${p.vence.slice(8,10)}/${p.vence.slice(5,7)}</b>
-                <div style="font-size:10.5px;color:${cor}">${p.diasRestantes<=0?"vence hoje":"em "+p.diasRestantes+" dia(s)"}</div>`:"—"}</td>
-          <td style="font-size:11px;line-height:1.7">${cr.slice(-4).map(c=>{
+          <td class="tit"><b>${esc(al.nome)}</b>${al.professora&&S.isLuma?`<div style="font-size:10.5px;color:${CORES[al.professora].cor};font-weight:600">${CORES[al.professora].nome}</div>`:""}</td>
+          <td data-l="Saldo"><b style="color:${s.saldo>0?"var(--good)":"var(--muted)"};font-size:15px">${s.saldo}</b></td>
+          <td data-l="Vence em"><div>${p?`<b style="color:${cor}">${p.vence.slice(8,10)}/${p.vence.slice(5,7)}</b>
+                <div style="font-size:10.5px;color:${cor}">${p.diasRestantes<=0?"vence hoje":"em "+p.diasRestantes+" dia(s)"}</div>`:"—"}</div></td>
+          <td data-l="Créditos" style="font-size:11px;line-height:1.7"><div>${cr.slice(-4).map(c=>{
               const st=c.usadoEm?["usada","var(--muted)"]:c.vencido?["venceu","var(--critical)"]
                       :c.acimaDoLimite?["acima do limite","var(--muted)"]:["disponível","var(--good)"];
               return `<div>${c.data.slice(8,10)}/${c.data.slice(5,7)}
                 <span style="color:${st[1]}">· ${st[0]}</span>
                 ${c.usadoEm?` (${c.usadoEm.slice(8,10)}/${c.usadoEm.slice(5,7)})`:""}</div>`;}).join("")}
-            ${cr.length>4?`<div style="color:var(--muted)">+${cr.length-4} anterior(es)</div>`:""}</td>
-          <td style="white-space:nowrap">
+            ${cr.length>4?`<div style="color:var(--muted)">+${cr.length-4} anterior(es)</div>`:""}</div></td>
+          <td class="acoes" style="white-space:nowrap">
             ${s.saldo>0?`<button class="btn sm" data-conv="${al.id}" ${telWhats(al.telefone)?"":"disabled"}>Chamar</button>`:""}
             <button class="btn sm" data-ajustar="${al.id}">Ajustar</button></td>
         </tr>`;}).join("")}</tbody></table></div>`
